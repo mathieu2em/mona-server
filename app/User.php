@@ -37,6 +37,14 @@ class User extends Authenticatable
     ];
 
     /**
+     * TODO.
+     */
+    public function isAdmin()
+    {
+        return $this->role == 'admin';
+    }
+
+    /**
      * The artworks that belong to the user.
      */
     public function artworks()
