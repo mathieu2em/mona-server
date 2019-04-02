@@ -36,4 +36,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * The artworks that belong to the user.
+     */
+    public function artworks()
+    {
+        return $this->belongsToMany('App\Artwork')
+                    ->withPivot(['rating', 'comment', 'photo'])
+                    ->withTimestamps();
+    }
 }

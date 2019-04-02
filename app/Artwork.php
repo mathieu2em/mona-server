@@ -97,4 +97,14 @@ class Artwork extends Model
     {
         return $this->belongsToMany('App\Artist');
     }
+
+    /**
+     * The users that belong to the artwork.
+     */
+    public function users()
+    {
+        return $this->belongsToMany('App\User')
+                    ->withPivot(['rating', 'comment', 'photo'])
+                    ->withTimestamps();
+    }
 }
