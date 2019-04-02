@@ -73,4 +73,20 @@ class Artwork extends Model
     {
         return $this->belongsTo('App\Artwork\Borough');
     }
+
+    /**
+     * The materials that belong to the artwork.
+     */
+    public function materials()
+    {
+        return $this->belongsToMany('App\Artwork\Material');
+    }
+
+    /**
+     * The techniques that belong to the artwork.
+     */
+    public function techniques()
+    {
+        return $this->belongsToMany('App\Artwork\Technique');
+    }
 }
