@@ -89,4 +89,12 @@ class Artwork extends Model
     {
         return $this->belongsToMany('App\Artwork\Technique');
     }
+
+    /**
+     * The artists that belong to the artwork.
+     */
+    public function artists()
+    {
+        return $this->belongsToMany('App\Artist');
+    }
 }
