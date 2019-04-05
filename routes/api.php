@@ -14,6 +14,9 @@ use Illuminate\Http\Request;
 */
 
 Route::namespace('V2')->middleware('json')->group(function () {
+    Route::resource('artworks', 'ArtworkController')->only(['index', 'show']);
+    Route::resource('artists', 'ArtistController')->only(['index', 'show']);
+
     Route::post('login', 'Auth\LoginController@login');
     Route::post('logout', 'Auth\LoginController@logout');
     Route::post('register', 'Auth\RegisterController@register');
