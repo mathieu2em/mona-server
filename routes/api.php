@@ -20,6 +20,13 @@ Route::namespace('V2')->middleware('json')->group(function () {
     Route::post('login', 'Auth\LoginController@login');
     Route::post('logout', 'Auth\LoginController@logout');
     Route::post('register', 'Auth\RegisterController@register');
+
+    Route::middleware('auth:api')->group(function () {
+        Route::prefix('user')->group(function () {
+            Route::get('/', 'ShowUser');
+            Route::apiResource('artworks', 'User\ArtworkController');
+        });
+    });
 });
 
 Route::namespace('V1')->prefix('v1')->group(function () {
