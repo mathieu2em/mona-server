@@ -23,6 +23,13 @@ Route::namespace('V2')->middleware('json')->group(function () {
 });
 
 Route::namespace('V1')->prefix('v1')->group(function () {
+    Route::get('loadJson1', 'LoadJson');
+
+    /* Authentication */
     Route::get('logUser', 'Auth\LoginController@login');
     Route::get('createUser', 'Auth\RegisterController@register');
+
+    Route::get('addNote', 'UserController@rate');
+    Route::get('addComment', 'UserController@comment');
+    Route::get('addPicture', 'UserController@photograph');
 });

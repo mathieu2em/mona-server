@@ -32,4 +32,36 @@ class Artist extends Model
     protected $casts = [
         'collective' => 'boolean',
     ];
+
+    /**
+     * Get the artist's first name.
+     *
+     * @return string
+     */
+    public function getFirstNameAttribute()
+    {
+        return $this->collective ? null : explode(' ', $this->name, 2)[0];
+    }
+
+    /**
+     * Get the artist's last name.
+     *
+     * @return string
+     */
+    public function getLastNameAttribute()
+    {
+        if ($this->collective)
+            return null;
+        return explode(' ', $this->name, 2)[1] ?? null;
+    }
+
+    /**
+     * Get the artist's collective name.
+     *
+     * @return string
+     */
+    public function getCollectiveNameAttribute()
+    {
+        return $this->collective ? $this->name : null;
+    }
 }
