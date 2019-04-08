@@ -13,6 +13,10 @@ use App\User;
 |
 */
 
+Artisan::command('job:dispatch {job}', function ($job) {
+    app("App\\Jobs\\$job")::dispatchNow();
+})->describe('Dispatch a job immediately');
+
 Artisan::command('user:role {user} {role=user}', function ($user, $role) {
     User::where('username', $user)->update(['role' => $role]);
 })->describe('Set the user\'s role');
