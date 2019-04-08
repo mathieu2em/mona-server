@@ -10,7 +10,7 @@ class LoginController extends Auth\LoginController
     /**
      * Handle a login request to the application.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return array
      */
     public function login(Request $request)
@@ -25,7 +25,7 @@ class LoginController extends Auth\LoginController
     /**
      * Send the response after the user was authenticated.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return array
      */
     protected function sendLoginResponse(Request $request)
@@ -39,7 +39,7 @@ class LoginController extends Auth\LoginController
     /**
      * Get the failed login response instance.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return array
      */
     protected function sendFailedLoginResponse(Request $request)

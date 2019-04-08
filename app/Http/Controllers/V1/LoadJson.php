@@ -6,14 +6,15 @@ use App\Artwork;
 use App\Http\Resources\V1\Artwork as ArtworkResource;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class LoadJson extends Controller
 {
     /**
      * Handle the incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  Request  $request
+     * @return AnonymousResourceCollection
      */
     public function __invoke(Request $request)
     {

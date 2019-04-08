@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V2\Auth;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
@@ -10,7 +11,7 @@ class ApiTokenController extends Controller
     /**
      * Update the authenticated user's API token.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return array
      */
     public function update(Request $request)
@@ -27,7 +28,7 @@ class ApiTokenController extends Controller
     /**
      * Invalidate the authenticated user's API token.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return array
      */
     public function invalidate(Request $request)

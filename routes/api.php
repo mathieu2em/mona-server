@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,11 +15,13 @@ Route::namespace('V2')->middleware('json')->group(function () {
     Route::resource('artworks', 'ArtworkController')->only(['index', 'show']);
     Route::resource('artists', 'ArtistController')->only(['index', 'show']);
 
+    /* Authentication */
     Route::post('login', 'Auth\LoginController@login');
-    Route::post('logout', 'Auth\LoginController@logout');
     Route::post('register', 'Auth\RegisterController@register');
 
     Route::middleware('auth:api')->group(function () {
+        Route::post('logout', 'Auth\LoginController@logout');
+
         Route::prefix('user')->group(function () {
             Route::get('/', 'ShowUser');
             Route::apiResource('artworks', 'User\ArtworkController');
@@ -38,5 +38,5 @@ Route::namespace('V1')->prefix('v1')->group(function () {
 
     Route::get('addNote', 'UserController@rate');
     Route::get('addComment', 'UserController@comment');
-    Route::get('addPicture', 'UserController@photograph');
+    Route::post('addPicture', 'UserController@photograph');
 });

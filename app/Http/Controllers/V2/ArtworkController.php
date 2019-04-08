@@ -5,14 +5,14 @@ namespace App\Http\Controllers\V2;
 use App\Artwork;
 use App\Http\Resources\V2\Artwork as ArtworkResource;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ArtworkController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return AnonymousResourceCollection
      */
     public function index()
     {
@@ -22,8 +22,8 @@ class ArtworkController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Artwork  $artwork
-     * @return \Illuminate\Http\Response
+     * @param  Artwork  $artwork
+     * @return ArtworkResource
      */
     public function show(Artwork $artwork)
     {

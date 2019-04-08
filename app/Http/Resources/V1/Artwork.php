@@ -4,6 +4,7 @@ namespace App\Http\Resources\V1;
 
 use App\Http\Resources\V1\Artist as ArtistResource;
 use App\Http\Resources\V1\MultiLanguage as MultiLanguageResource;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class Artwork extends JsonResource
@@ -22,7 +23,7 @@ class Artwork extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return array
      */
     public function toArray($request)

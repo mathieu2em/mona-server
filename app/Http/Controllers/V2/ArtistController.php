@@ -4,14 +4,14 @@ namespace App\Http\Controllers\V2;
 
 use App\Artist;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Collection;
 
 class ArtistController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Artist[]|Collection
      */
     public function index()
     {
@@ -21,8 +21,8 @@ class ArtistController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Artist  $artist
-     * @return \Illuminate\Http\Response
+     * @param  Artist  $artist
+     * @return Artist
      */
     public function show(Artist $artist)
     {
