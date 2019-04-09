@@ -71,8 +71,8 @@
                 <span>{{ value.pivot.comment }}</span>
                 <br>
                 <b>Photo:</b>
-                <!-- XXX -->
-                <span>{{ value.pivot.photo }}</span>
+                <br>
+                <img v-if="value.pivot.photo" v-bind:src="value.pivot.photo | url">
             </li>
           </ul>
         </b-card>
@@ -133,6 +133,11 @@
       onFiltered(filteredItems) {
         this.totalRows = filteredItems.length
         this.currentPage = 1
+      }
+    },
+    filters: {
+      url: function (value) {
+        return '/' + value.replace('public', 'storage')
       }
     }
   }

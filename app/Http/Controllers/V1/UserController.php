@@ -116,7 +116,7 @@ class UserController extends Controller
         if ($request->file('file')) {
             Auth::user()->artworks()->syncWithoutDetaching([
                 $request->IDOeuvre => [
-                    'photo' => $request->file('file')->store('photos')
+                    'photo' => $request->file('file')->store('public/photos')
                 ],
             ]);
         }

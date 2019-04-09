@@ -51,7 +51,7 @@ class ArtworkController extends Controller
         Auth::user()->artworks()->syncWithoutDetaching([$request->id => [
             'rating' => $request->rating,
             'comment' => $request->comment,
-            'photo' => $photo ? $photo->store('photos') : null,
+            'photo' => $photo ? $photo->store('public/photos') : null,
         ]]);
     }
 
@@ -81,7 +81,7 @@ class ArtworkController extends Controller
         Auth::user()->artworks()->updateExistingPivot($id, [
             'rating' => $request->rating,
             'comment' => $request->comment,
-            'photo' => $photo ? $photo->store('photos') : null,
+            'photo' => $photo ? $photo->store('public/photos') : null,
         ]);
     }
 

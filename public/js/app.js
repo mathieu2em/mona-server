@@ -2207,6 +2207,11 @@ __webpack_require__.r(__webpack_exports__);
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
     }
+  },
+  filters: {
+    url: function url(value) {
+      return '/' + value.replace('public', 'storage');
+    }
   }
 });
 
@@ -62091,7 +62096,13 @@ var render = function() {
                         _vm._v(" "),
                         _c("b", [_vm._v("Photo:")]),
                         _vm._v(" "),
-                        _c("span", [_vm._v(_vm._s(value.pivot.photo))])
+                        _c("br"),
+                        _vm._v(" "),
+                        value.pivot.photo
+                          ? _c("img", {
+                              attrs: { src: _vm._f("url")(value.pivot.photo) }
+                            })
+                          : _vm._e()
                       ])
                     }),
                     0
