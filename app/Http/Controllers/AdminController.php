@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Artwork;
 use App\User;
+use App\Artwork;
+use App\Http\Resources\V2\Artwork as ArtworkResource;
+use App\Http\Resources\User as UserResource;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -26,7 +28,8 @@ class AdminController extends Controller
      */
     public function artworks()
     {
-        return view('admin.artworks')->with('artworks', Artwork::all());
+        $artworks = ArtworkResource::collection(Artwork::all());
+        return view('admin.artworks')->with('artworks', $artworks->toJson());
     }
 
     /**
@@ -36,6 +39,7 @@ class AdminController extends Controller
      */
     public function users()
     {
-        return view('admin.users')->with('users', User::all());
+        $users = UserResource::collection(User::all());
+        return view('admin.users')->with('users', $users->toJson());
     }
 }

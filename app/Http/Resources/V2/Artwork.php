@@ -4,6 +4,7 @@ namespace App\Http\Resources\V2;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 class Artwork extends JsonResource
 {
@@ -25,8 +26,20 @@ class Artwork extends JsonResource
             'materials' => $this->materials,
             'techniques' => $this->techniques,
             'artists' => $this->artists,
-            'borough' => $this->borough,
+            'borough' => $this->borough->name,
             'location' => $this->location,
+            $this->mergeWhen(Auth::user() && Auth::user()->isAdmin(), [
+                'ratings' => $this->users->map(function ($item) {
+                    return $item->pivot->rating;
+                })->reject(function ($value) {
+                    return $value == null;
+                }),
+                'comments' => $this->users->map(function ($item) {
+                    return $item->pivot->comment;
+                })->reject(function ($value) {
+                    return $value == null || $value == '';
+                }),
+            ]),
         ];
     }
 }
