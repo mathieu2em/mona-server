@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 class UserController extends Controller
 {
     /**
-     * Get a validator for an incoming registration request.
+     * Get a validator for an incoming request.
      *
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
@@ -18,67 +18,20 @@ class UserController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
+            'IDOeuvre' => ['required', 'integer'],
+            'note' => ['integer', 'max:5'],
+            'comment' => ['string', 'max:2048'],
             'file' => ['image', 'max:4096'],
         ]);
     }
 
     /**
-     * Store a newly created rating in storage.
+     * XXX.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $data
      * @return array
      */
-    public function rate(Request $request)
-    {
-        if (! Auth::once($request->only('username', 'password'))) {
-            return [
-                'successful' => false,
-                'erreur' => trans('auth.failed'),
-            ];
-        }
-
-        Auth::user()->artworks()->syncWithoutDetaching([
-            $request->IDOeuvre => ['rating' => $request->note],
-        ]);
-
-        return [
-            'successful' => true,
-            'erreur' => null,
-        ];
-    }
-
-    /**
-     * Store a newly created comment in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
-    public function comment(Request $request)
-    {
-        if (! Auth::once($request->only('username', 'password'))) {
-            return [
-                'successful' => false,
-                'erreur' => trans('auth.failed'),
-            ];
-        }
-
-        Auth::user()->artworks()->syncWithoutDetaching([
-            $request->IDOeuvre => ['comment' => $request->comment],
-        ]);
-
-        return [
-            'successful' => true,
-            'erreur' => null,
-        ];
-    }
-
-    /**
-     * Store a newly created photo in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
-    public function photograph(Request $request)
+    public function verify(Request $request)
     {
         if (! Auth::once($request->only('username', 'password'))) {
             return [
@@ -94,15 +47,80 @@ class UserController extends Controller
             ];
         }
 
-        Auth::user()->artworks()->syncWithoutDetaching([
-            $request->IDOeuvre => [
-                'photo' => $request->file('file')->store('photos')
-            ],
-        ]);
-
         return [
             'successful' => true,
             'erreur' => null,
         ];
+    }
+
+    /**
+     * Store a newly created rating in storage.
+     *
+     * @param  Request  $request
+     * @return array
+     */
+    public function rate(Request $request)
+    {
+        $status = $this->verify($request);
+        if (!$status['successful']) {
+            return $status;
+        }
+
+        /* XXX */
+        if ($request->note) {
+            Auth::user()->artworks()->syncWithoutDetaching([
+                $request->IDOeuvre => ['rating' => $request->note],
+            ]);
+        }
+
+        return $status;
+    }
+
+    /**
+     * Store a newly created comment in storage.
+     *
+     * @param  Request  $request
+     * @return array
+     */
+    public function comment(Request $request)
+    {
+        $status = $this->verify($request);
+        if (!$status['successful']) {
+            return $status;
+        }
+
+        /* XXX */
+        if ($request->comment) {
+            Auth::user()->artworks()->syncWithoutDetaching([
+                $request->IDOeuvre => ['comment' => $request->comment],
+            ]);
+        }
+
+        return $status;
+    }
+
+    /**
+     * Store a newly created photo in storage.
+     *
+     * @param  Request  $request
+     * @return array
+     */
+    public function photograph(Request $request)
+    {
+        $status = $this->verify($request);
+        if (!$status['successful']) {
+            return $status;
+        }
+
+        /* XXX */
+        if ($request->file('file')) {
+            Auth::user()->artworks()->syncWithoutDetaching([
+                $request->IDOeuvre => [
+                    'photo' => $request->file('file')->store('photos')
+                ],
+            ]);
+        }
+
+        return $status;
     }
 }
