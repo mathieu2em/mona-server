@@ -11,8 +11,11 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::view('/', 'welcome');
+
+Route::get('ift3150/{student}', function ($student) {
+    $view = "ift3150.$student";
+    return View::exists($view) ? view($view) : abort(404);
 });
 
 Auth::routes(['register' => false, 'reset' => false]);
