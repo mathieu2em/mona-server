@@ -25,6 +25,137 @@
 
                 <h2>Rapport hebdomadaire</h2>
 
+                <h4>Semaine 13 : 15 au 19 avril</h4>
+                <p>
+                    Cette semaine j’ai eu la chance de me rattraper sur ma semaine
+                    manquée dû à ma blessure. À la suite d’une analyse plus
+                    approfondie du code, je distingue que le code des onglets est
+                    incohérent et non-structuré en plus d’être incomplet; beaucoup
+                    de code entre les fichiers xml et java se <i>overlapp</i> et
+                    ne communique simplement pas bien.  Pour ces raisons, j’ai
+                    décidé de complètement recommencer cette partie du code pour
+                    avoir une meilleure fondation de notre application. La marge
+                    de manœuvre dans les méthodes des fonctions est un aspect qui
+                    nous a donné beaucoup de trouble. Par exemple, pour chaque
+                    fragment, mettre le <i>listener</i> dans le MainActivity ou
+                    directement le mettre dans la classe du fragment. Beaucoup de
+                    coordination de code à été appris et pris en compte pour faire
+                    exécuter le tout.
+                </p>
+                <p>
+                    On a commencé par créer un nouveau TabLayout et le ToolBar de
+                    l’application d’où on a bien compris la différence dans les
+                    layout (linear, relative, etc). Plusieurs petits problèmes sont
+                    survenus dont nous allons devoir y revenir plus tard tel que
+                    le fragment de la carte avec la légende désorientée, la glissade
+                    entre les onglets du doigt cause des troubles avec la gestion
+                    de la carte et d’autre mineur difficulté. Un problème auquel
+                    nous avons pu tout de suite s’adresser c’est le boutons
+                    <i>overflow</i> des paramètres qui n’apparait plus sur le
+                    ToolBar; on a recodé un nouveau menu ressource et changer
+                    quelque ligne pour pouvoir l’afficher avec succès sur notre
+                    ToolBar et non ActionBar
+                </p>
+                <p>
+                    Un autre aspect du code en général qui me cause beaucoup de
+                    difficulté à moi, c’est le montant de <i>‘’hardcode’’</i> dans
+                    les fichiers xml. Une meilleure pratique de programmation que
+                    j’ai mit en place est créer un style <i>‘’MonaTheme’’</i> d’où
+                    on incorpore tous les couleur et texte en relation avec le
+                    projet Mona pour pouvoir l’incorporer plus facilement dans
+                    différent aspect de l’application tel que le ToolBar et
+                    TabLayout. Ensuite, il fallait changer la valeur minimale du
+                    API de 15 à 21 pour que le code puisse générer le type des
+                    ToolBar mise à jour récemment. Aussi, beaucoup de petite mutation
+                    au courant du recodage général des onglets ont causé notre
+                    application à crashé pour lequel j’ai profité du VCS et
+                    l’historique du code pour revenir à des points spécifiques au
+                    temps où l’application s’exécutait correctement pour changer
+                    et ramené des commandes. Finalement, je me suis introduis
+                    <i>Image Asset Studio</i> pour la création dans les différents
+                    formats des icones des onglets (comme expliqué la semaine
+                    passée) fournis par nos designers.
+                </p>
+                <p>
+                    On a aussi eu une rencontre avec l’équipe pour mettre au
+                    point les détails finales avec les designers sur les trucs à
+                    faire avant le lancement prévu en fin mai. Voici une
+                    mise-à-jours en ordre de mes nouvelles priorités :
+                    <ol>
+                        <li>
+                            Réparer le fragment de la carte et potentiellement
+                            enlever la glissade du doigt entre les onglets
+                        </li>
+                        <li>
+                            Contacter Google Play Store pour les conditions sur
+                            le lancement d’une application sur leur marché
+                        </li>
+                        <li>Rajouter les données au Badges</li>
+                        <li>
+                            Rendre la liste et la Galerie plus propre et plus
+                            belle esthétiquement
+                        </li>
+                        <li>Configurer le login</li>
+                    </ol>
+                </p>
+
+                <h4>Semaine 12 : 8 Avril au 12 Avril</h4>
+                <p>
+                    Pour donner suite à une analyse approfondie sur les codes
+                    inutiles des mipmap reporté précédemment, je réalise qu’il y a
+                    beaucoup plus de faille au code que j’y croyait initialement;
+                    quand on change de scène (par ex : ODJ vers Carte) les icônes
+                    des onglets disparaissent. Donc, nous réussissons simplement de
+                    les afficher une première fois et pas par après. Je suis donc
+                    retournée sur mes pas pour trouver à quelles étapes les icônes
+                    disparaissent, simplement pour en venir à la conclusion que même
+                    sur les codes de mes prédécesseur; ils éprouvait le même problème.
+                </p>
+                <p>
+                    Après une discussion avec Vincent, j’ai reçu une confirmation
+                    que c’était un bug qui n’a pas encore été adressé. Résoudre ce
+                    problème risque de rajouter un certain bloc de temps dans mon
+                    horaire futur que je juge personnellement important à adresser.
+                    Sous tentative de distinguer le code mieux, on crée une classe
+                    séparer pour noter pager adapter qui se retrouve dans le
+                    MainActivity. Sur ce on remodèle le fichier activity_main.xml
+                    autour de TabLayout pour pouvoir proprement reconstruire notre
+                    code des onglets et potentiellement incorporer de pouvoir
+                    glisser du doigt entre les onglets.
+                </p>
+
+                <h4>Semaine 11 : 1e Avril au 5 Avril</h4>
+                <p>
+                    Je me suis fracturé la main droite en faisant du sport;
+                    ainsi je dois porter un plâtre pour le reste du mois
+                    d’Avril. Mon médecin m’a avisé de pas utiliser ma main au
+                    courant du rétablissement. Malgré ceci, j’ai changé les
+                    commandes de ma souris pour pouvoir l’utiliser proprement de
+                    ma main gauche ainsi d’avoir un doigt disponible sur ma main
+                    droite pour retenir une efficacité minimale. Cependant,
+                    aucun travail n’a pu être complété au courant de cette
+                    semaine pour cette raison.
+                </p>
+
+                <h4>Semaine 10 : 25 Mars au 29 Mars</h4>
+                <p>
+                    J’éprouve de la difficulté à mettre à jours les icones de
+                    l’œuvre du jour, carte, liste et galerie du menu principale
+                    d’où le code se retrouve dans la classe MainActivity. Il
+                    s’agit d’un diffèrent concept qu’auparavant avec les ImageViews
+                    et les Drawables. Maintenant, c’est une question de gestion
+                    avec les mipmap. En pratique, elles sont plus utilisées dans
+                    les applications pour les icones de petite taille (hdpi, mdpi,
+                    xhdpi, xxhdpi, xxxhdpi). Pour éviter la complexité des choses,
+                    j’ai simplement rajouté les nouveaux icones dans chaque dossier
+                    des mipmap et j’ai ajuster le code cordialement pour les faire
+                    apparaitre dans notre menu. Il semble avoir énormément de code
+                    inutile dirigé vers une idée antérieure de l’application tel
+                    que les icones du menu ont un mode actif et passif. Donc, je
+                    dois m’occuper de nettoyer le code inutile pour augmenter
+                    l’efficacité du programme.
+                </p>
+
                 <h4>Semaine 9 : 18 Mars au 22 mars</h4>
                 <p>
                     Après une rencontre avec l’équipe, dû à la complexité du langage
