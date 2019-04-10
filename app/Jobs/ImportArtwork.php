@@ -60,18 +60,18 @@ class ImportArtwork implements ShouldQueue
 
             $category = Artwork\Category::firstOrCreate(
                 ['fr' => $artwork->CategorieObjet],
-                ['en' => $artwork->CategorieObjetAng],
+                ['en' => $artwork->CategorieObjetAng]
             );
 
             $subcategory = Artwork\Subcategory::firstOrCreate(
                 ['fr' => $artwork->SousCategorieObjet],
-                ['en' => $artwork->SousCategorieObjetAng],
+                ['en' => $artwork->SousCategorieObjetAng]
             );
 
             $dimensions = array_filter($artwork->DimensionsGenerales);
 
             $borough = Artwork\Borough::firstOrCreate(
-                ['name' => $artwork->Arrondissement],
+                ['name' => $artwork->Arrondissement]
             );
 
             $location = new Point($artwork->CoordonneeLatitude,
@@ -81,7 +81,7 @@ class ImportArtwork implements ShouldQueue
                 ['title' => $title, 'location' => $location],
                 ['produced_at' => $produced_at, 'dimensions' => $dimensions,
                  'borough_id' => $borough->id, 'category_id' => $category->id,
-                 'subcategory_id' => $subcategory->id],
+                 'subcategory_id' => $subcategory->id]
             );
 
             /* Artists */
@@ -93,7 +93,7 @@ class ImportArtwork implements ShouldQueue
                 }
 
                 $model->artists()->syncWithoutDetaching(Artist::updateOrCreate(
-                    ['name' => $name], ['collective' => $collective],
+                    ['name' => $name], ['collective' => $collective]
                 )->id);
             }
 
@@ -122,7 +122,7 @@ class ImportArtwork implements ShouldQueue
                 /* XXX */
                 if ($material[0] != '') {
                     $model->materials()->syncWithoutDetaching(Artwork\Material::updateOrCreate(
-                        ['fr' => $material[0]], ['en' => $material[1]],
+                        ['fr' => $material[0]], ['en' => $material[1]]
                     )->id);
                 }
             }
@@ -166,7 +166,7 @@ class ImportArtwork implements ShouldQueue
                 /* XXX */
                 if ($technique[0] != '') {
                     $model->techniques()->syncWithoutDetaching(Artwork\Technique::updateOrCreate(
-                        ['fr' => $technique[0]], ['en' => $technique[1]],
+                        ['fr' => $technique[0]], ['en' => $technique[1]]
                     )->id);
                 }
             }
