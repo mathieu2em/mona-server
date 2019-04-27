@@ -58,21 +58,21 @@
         <b-card>
           <ul class="list-group list-group-flush">
             <li v-for="value in row.item.collection" class="list-group-item">
-                <b>Title:</b>
-                <span>{{ value.title }}</span>
-                <br>
-                <b>Location:</b>
-                <span>({{ value.location.lat }}, {{ value.location.lng }})</span>
-                <br>
-                <b>Rating:</b>
-                <span>{{ value.pivot.rating }}</span>
-                <br>
-                <b>Comment:</b>
-                <span>{{ value.pivot.comment }}</span>
-                <br>
-                <b>Photo:</b>
-                <br>
-                <img v-if="value.pivot.photo" v-bind:src="value.pivot.photo | url">
+              <b>Title:</b>
+              <span>{{ value.title }}</span>
+              <br>
+              <b>Location:</b>
+              <span>({{ value.location.lat }}, {{ value.location.lng }})</span>
+              <br>
+              <b>Rating:</b>
+              <span>{{ value.pivot.rating }}</span>
+              <br>
+              <b>Comment:</b>
+              <span>{{ value.pivot.comment }}</span>
+              <br>
+              <b>Photo:</b>
+              <br>
+              <img v-if="value.pivot.photo" v-bind:src="value.pivot.photo | url">
             </li>
           </ul>
         </b-card>

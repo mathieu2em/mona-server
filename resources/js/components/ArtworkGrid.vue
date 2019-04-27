@@ -52,22 +52,6 @@
         {{ row.value.fr }}
       </template>
 
-      <!--
-      <template slot="materials" slot-scope="row">
-        <ul>
-          <li v-for="value in row.value">{{ value.fr }}</li>
-        </ul>
-      </template>
-      -->
-
-      <!--
-      <template slot="techniques" slot-scope="row">
-        <ul>
-          <li v-for="value in row.value">{{ value.fr }}</li>
-        </ul>
-      </template>
-      -->
-
       <template slot="artists" slot-scope="row">
         <ul>
           <li v-for="value in row.value">{{ value.name }} {{ value.collective ? '(Collectif)' : '' }}</li>
@@ -93,30 +77,30 @@
           <p><b>ID:</b> <span>{{ row.item.id }}</span></p>
           <p><b>Dimensions:</b> <span>{{ row.item.dimensions }}</span></p>
           <p>
-              <b>Materials:</b>
-              <ul><li v-for="value in row.item.materials">{{ value.fr }}</li></ul>
+            <b>Materials:</b>
+            <ul><li v-for="value in row.item.materials">{{ value.fr }}</li></ul>
           </p>
           <p>
-              <b>Techniques:</b>
-              <ul><li v-for="value in row.item.techniques">{{ value.fr }}</li></ul>
+            <b>Techniques:</b>
+            <ul><li v-for="value in row.item.techniques">{{ value.fr }}</li></ul>
           </p>
           <p>
-              <b>Location:</b>
-              <!-- TODO Use map -->
-              <span>({{ row.item.location.lat }}, {{ row.item.location.lng }})</span>
+            <b>Location:</b>
+            <!-- TODO Use map -->
+            <span>({{ row.item.location.lat }}, {{ row.item.location.lng }})</span>
           </p>
           <p v-if="row.item.ratings.len">
-              <b>Ratings:</b>
-              <ul>
-                  <li><b>Minimum:</b> <span>{{ row.item.ratings.min }}</span></li>
-                  <li><b>Maximum:</b> <span>{{ row.item.ratings.max }}</span></li>
-                  <li><b>Average:</b> <span>{{ row.item.ratings.avg }}</span></li>
-                  <li><b>Median:</b> <span>{{ row.item.ratings.med }}</span></li>
-              </ul>
+            <b>Ratings:</b>
+            <ul>
+              <li><b>Minimum:</b> <span>{{ row.item.ratings.min }}</span></li>
+              <li><b>Maximum:</b> <span>{{ row.item.ratings.max }}</span></li>
+              <li><b>Average:</b> <span>{{ row.item.ratings.avg }}</span></li>
+              <li><b>Median:</b> <span>{{ row.item.ratings.med }}</span></li>
+            </ul>
           </p>
           <p v-if="row.item.comments.length">
-              <b>Comments:</b>
-              <ul><li v-for="value in row.item.comments">{{ value }}</li></ul>
+            <b>Comments:</b>
+            <ul><li v-for="value in row.item.comments">{{ value }}</li></ul>
           </p>
         </b-card>
       </template>
