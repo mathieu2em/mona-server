@@ -6,6 +6,7 @@ use App\Artwork;
 use App\Http\Resources\V2\Artwork as ArtworkResource;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Cache;
 
 class ArtworkController extends Controller
 {
@@ -16,7 +17,12 @@ class ArtworkController extends Controller
      */
     public function index()
     {
-        return ArtworkResource::collection(Artwork::all());
+        $artworks = Cache::remember('artworks', now()->addMonths(1),
+            function () {
+                return Artwork::all();
+            });
+
+        return ArtworkResource::collection($artworks);
     }
 
     /**

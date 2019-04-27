@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V2;
 use App\Artist;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Cache;
 
 class ArtistController extends Controller
 {
@@ -15,7 +16,9 @@ class ArtistController extends Controller
      */
     public function index()
     {
-        return Artist::all();
+        return Cache::remember('artists', now()->addMonths(1), function () {
+            return Artist::all();
+        });
     }
 
     /**

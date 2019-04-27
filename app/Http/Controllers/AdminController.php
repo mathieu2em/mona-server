@@ -17,8 +17,13 @@ class AdminController extends Controller
      */
     public function artworks()
     {
-        $artworks = ArtworkResource::collection(Artwork::all());
-        return view('admin.artworks')->with('artworks', $artworks->toJson());
+        $artworks = Cache::remember('admin.artworks', now()->addHours(1),
+            function () {
+                return Artwork::all();
+            });
+
+        return view('admin.artworks')->with('artworks',
+            ArtworkResource::collection($artworks)->toJson());
     }
 
     /**
@@ -28,7 +33,12 @@ class AdminController extends Controller
      */
     public function users()
     {
-        $users = UserResource::collection(User::all());
-        return view('admin.users')->with('users', $users->toJson());
+        $users = Cache::remember('admin.users', now()->addHours(1),
+            function () {
+                return User::all();
+            });
+
+        return view('admin.users')->with('users',
+            UserResource::collection($users)->toJson());
     }
 }
