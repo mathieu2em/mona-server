@@ -19,4 +19,4 @@ Artisan::command('job:dispatch {job}', function ($job) {
 
 Artisan::command('user:role {user} {role=user}', function ($user, $role) {
     User::where('username', $user)->update(['role' => $role]);
-})->describe('Set the user\'s role');
+})->describe('Set the role of a user');

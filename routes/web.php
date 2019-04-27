@@ -20,10 +20,13 @@ Route::get('ift3150/{student}', function ($student) {
 
 Auth::routes(['register' => false, 'reset' => false]);
 
-Route::get('home', 'HomeController@index')->name('home');
+Route::middleware('auth')->group(function () {
+    Route::view('home', 'home');
 
-Route::prefix('admin')->group(function () {
-    Route::redirect('/', 'admin/artworks');
-    Route::get('artworks', 'AdminController@artworks');
-    Route::get('users', 'AdminController@users');
+    Route::prefix('admin')->middleware('role:admin')->group(function () {
+        Route::redirect('/', 'admin/artworks');
+
+        Route::get('artworks', 'AdminController@artworks');
+        Route::get('users', 'AdminController@users');
+    });
 });

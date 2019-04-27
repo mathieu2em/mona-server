@@ -15,7 +15,6 @@ Route::namespace('V2')->middleware('json')->group(function () {
     Route::resource('artworks', 'ArtworkController')->only(['index', 'show']);
     Route::resource('artists', 'ArtistController')->only(['index', 'show']);
 
-    /* Authentication */
     Route::post('login', 'Auth\LoginController@login');
     Route::post('register', 'Auth\RegisterController@register');
 
@@ -23,7 +22,7 @@ Route::namespace('V2')->middleware('json')->group(function () {
         Route::post('logout', 'Auth\LoginController@logout');
 
         Route::prefix('user')->group(function () {
-            Route::get('/', 'ShowUser');
+            Route::get('/', 'User\Show');
             Route::apiResource('artworks', 'User\ArtworkController');
         });
     });
@@ -32,7 +31,6 @@ Route::namespace('V2')->middleware('json')->group(function () {
 Route::namespace('V1')->prefix('v1')->group(function () {
     Route::get('loadJson1', 'LoadJson');
 
-    /* Authentication */
     Route::get('logUser', 'Auth\LoginController@login');
     Route::get('createUser', 'Auth\RegisterController@register');
 
