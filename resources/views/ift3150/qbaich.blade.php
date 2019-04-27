@@ -257,7 +257,7 @@
                 <ul>
                     <li>
                         Familiarisation avec le projet, suite à la lecture de l'article
-                        <a href="{{ asset('storage/Projet MONA.pdf') }}"><i>Recherche,
+                        <a href="{{ asset('storage/MONA.pdf') }}"><i>Recherche,
                         analyse et réflexion concernant la médiation de l'art public par le
                         numérique</i></a>, du groupe de recherche Art+site de l'Université
                         de Montréal.

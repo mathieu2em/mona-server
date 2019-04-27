@@ -1,2 +1,5 @@
 *
 !.gitignore
+!reports/
+!logo.jpg
+!MONA.pdf
