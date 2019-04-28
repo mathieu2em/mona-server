@@ -68,7 +68,7 @@ class ImportArtwork implements ShouldQueue
                 ['en' => $artwork->SousCategorieObjetAng],
             );
 
-            $dimensions = $artwork->DimensionsGenerales;
+            $dimensions = array_filter($artwork->DimensionsGenerales);
 
             $borough = Artwork\Borough::firstOrCreate(
                 ['name' => $artwork->Arrondissement],
@@ -92,7 +92,7 @@ class ImportArtwork implements ShouldQueue
                     $name = $artist->Prenom . ' ' . $artist->Nom;
                 }
 
-                $model->artists()->sync(Artist::updateOrCreate(
+                $model->artists()->syncWithoutDetaching(Artist::updateOrCreate(
                     ['name' => $name], ['collective' => $collective],
                 )->id);
             }
@@ -121,7 +121,7 @@ class ImportArtwork implements ShouldQueue
 
                 /* XXX */
                 if ($material[0] != '') {
-                    $model->materials()->sync(Artwork\Material::updateOrCreate(
+                    $model->materials()->syncWithoutDetaching(Artwork\Material::updateOrCreate(
                         ['fr' => $material[0]], ['en' => $material[1]],
                     )->id);
                 }
@@ -165,7 +165,7 @@ class ImportArtwork implements ShouldQueue
 
                 /* XXX */
                 if ($technique[0] != '') {
-                    $model->techniques()->sync(Artwork\Technique::updateOrCreate(
+                    $model->techniques()->syncWithoutDetaching(Artwork\Technique::updateOrCreate(
                         ['fr' => $technique[0]], ['en' => $technique[1]],
                     )->id);
                 }

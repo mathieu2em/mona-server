@@ -19,6 +19,20 @@ class Artwork extends JsonResource
     {
         return sprintf('/Date(%d000+0000)/', strtotime($date)); // XXX
     }
+    /**
+     * TODO.
+     *
+     * @param  array  $dimensions
+     * @return string
+     */
+    public function toStringDimensions($dimensions)
+    {
+        $last = array_pop($dimensions);
+        if (!$dimensions) {
+            return $last;
+        }
+        return join(' x ', $dimensions) . (strpos($last, 'm') !== false ? ' ' : ' x ') . $last;
+    }
 
     /**
      * Transform the resource into an array.
@@ -33,16 +47,16 @@ class Artwork extends JsonResource
             'Titre' => $this->title,
             'Categorie' => $this->category->fr,
             'CategorieANG' => $this->category->en,
-            'SousCategorie' => $this->subcategory->fr,
-            'SousCategorieANG' => $this->subcategory->en,
+            'SousCategorie' => $this->subcategory->fr ?? null,
+            'SousCategorieANG' => $this->subcategory->en ?? null,
             'Date' => $this->toMicrosoftDateFormat($this->produced_at),
-            'Materiaux' => MultiLanguageResource::collection($this->materials),
-            'Technique' => MultiLanguageResource::collection($this->techniques),
-            'Dimension' => $this->dimensions, // XXX
+            'Materiaux' => $this->materials->isEmpty() ? null : MultiLanguageResource::collection($this->materials),
+            'Technique' => $this->techniques->isEmpty() ? null : MultiLanguageResource::collection($this->techniques),
+            'Dimension' => empty($this->dimensions) ? null : $this->toStringDimensions($this->dimensions),
             'Arrondissement' => $this->borough->name,
             'Latitude' => $this->location->lat,
             'Longitude' => $this->location->lng,
-            'Artiste' => ArtistResource::collection($this->artists),
+            'Artiste' => $this->artists->isEmpty() ? null : ArtistResource::collection($this->artists),
         ];
     }
 }
