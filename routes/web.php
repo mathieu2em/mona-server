@@ -26,7 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('admin')->middleware('role:admin')->group(function () {
         Route::redirect('/', 'admin/artworks');
 
-        Route::get('artworks', 'AdminController@artworks');
-        Route::get('users', 'AdminController@users');
+        Route::view('artworks', 'admin.artworks');
+        Route::view('users', 'admin.users');
     });
 });
