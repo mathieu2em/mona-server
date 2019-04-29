@@ -17,7 +17,7 @@
         <div class="container">
             <div class="my-4 text-center">
                 <a href="{{ url('/') }}">
-                    <img src="{{ asset('storage/logo.jpg') }}" alt="MONA">
+                    <img src="{{ asset('storage/logo.svg') }}" alt="MONA" height="128px">
                 </a>
             </div>
             <div>
