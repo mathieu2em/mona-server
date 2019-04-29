@@ -23,10 +23,10 @@ class ArtworkComposer
      */
     public function __construct()
     {
-        $this->artworks = ArtworkResource::collection(
-            Cache::remember('admin.artworks', now()->addHours(1), function () {
-                return Artwork::all();
-            }));
+        $this->artworks = Cache::remember('admin.artworks', now()->addHours(1),
+            function () {
+                return ArtworkResource::collection(Artwork::all())->toJson();
+            });
     }
 
     /**
@@ -37,6 +37,6 @@ class ArtworkComposer
      */
     public function compose(View $view)
     {
-        $view->with('artworks', $this->artworks->toJson());
+        $view->with('artworks', $this->artworks);
     }
 }

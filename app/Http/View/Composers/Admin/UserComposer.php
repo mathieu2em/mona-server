@@ -23,10 +23,10 @@ class UserComposer
      */
     public function __construct()
     {
-        $this->users = UserResource::collection(
-            Cache::remember('admin.users', now()->addHours(1), function () {
-                return User::all();
-            }));
+        $this->users = Cache::remember('admin.users', now()->addHours(1),
+            function () {
+                return UserResource::collection(User::all())->toJson();
+            });
     }
 
     /**
@@ -37,6 +37,6 @@ class UserComposer
      */
     public function compose(View $view)
     {
-        $view->with('users', $this->users->toJson());
+        $view->with('users', $this->users);
     }
 }

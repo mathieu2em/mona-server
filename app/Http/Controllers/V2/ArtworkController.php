@@ -17,12 +17,10 @@ class ArtworkController extends Controller
      */
     public function index()
     {
-        $artworks = Cache::remember('artworks', now()->addMonths(1),
+        return Cache::remember('v2.artworks', now()->addMonths(1),
             function () {
-                return Artwork::all();
+                return ArtworkResource::collection(Artwork::all());
             });
-
-        return ArtworkResource::collection($artworks);
     }
 
     /**

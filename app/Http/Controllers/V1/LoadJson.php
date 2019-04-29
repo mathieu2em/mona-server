@@ -19,11 +19,9 @@ class LoadJson extends Controller
      */
     public function __invoke(Request $request)
     {
-        $artworks = Cache::remember('artworks', now()->addMonths(1),
+        return Cache::remember('v1.artworks', now()->addMonths(1),
             function () {
-                return Artwork::all();
+                return ArtworkResource::collection(Artwork::all());
             });
-
-        return ArtworkResource::collection($artworks);
     }
 }

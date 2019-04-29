@@ -17,12 +17,10 @@ class ArtistController extends Controller
      */
     public function index()
     {
-        $artists = Cache::remember('artists', now()->addMonths(1),
+        return Cache::remember('v2.artists', now()->addMonths(1),
             function () {
-                return Artist::all();
+                return ArtistResource::collection(Artist::all());
             });
-
-        return ArtistResource::collection($artists);
     }
 
     /**
