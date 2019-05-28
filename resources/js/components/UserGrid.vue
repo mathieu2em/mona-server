@@ -72,7 +72,7 @@
               <br>
               <b>Photo:</b>
               <br>
-              <img v-if="value.pivot.photo" v-bind:src="value.pivot.photo | url">
+              <img v-if="value.pivot.photo" v-bind:src="value.pivot.photo | url" height="460px">
             </li>
           </ul>
         </b-card>
@@ -137,7 +137,7 @@
     },
     filters: {
       url: function (value) {
-        return '/' + value.replace('public', 'storage')
+        return '../' + value.replace('public', 'storage')
       }
     }
   }

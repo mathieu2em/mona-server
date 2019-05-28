@@ -9777,20 +9777,21 @@ h3 {
   display: none !important;
 }
 
-.b-dropdown-form {
+.dropdown.b-dropdown .b-dropdown-form {
   display: inline-block;
   padding: 0.25rem 1.5rem;
   width: 100%;
   clear: both;
   font-weight: 400;
 }
-.b-dropdown-form:first-child {
-  border-top-left-radius: calc(0.25rem - 1px);
-  border-top-right-radius: calc(0.25rem - 1px);
+.dropdown.b-dropdown .b-dropdown-form:focus {
+  outline: 1px dotted !important;
+  outline: 5px auto -webkit-focus-ring-color !important;
 }
-.b-dropdown-form:last-child {
-  border-bottom-right-radius: calc(0.25rem - 1px);
-  border-bottom-left-radius: calc(0.25rem - 1px);
+.dropdown.b-dropdown .b-dropdown-form.disabled, .dropdown.b-dropdown .b-dropdown-form:disabled {
+  outline: 0 !important;
+  color: #6c757d;
+  pointer-events: none;
 }
 
 .b-dropdown-text {
@@ -9800,14 +9801,6 @@ h3 {
   width: 100%;
   clear: both;
   font-weight: lighter;
-}
-.b-dropdown-text:first-child {
-  border-top-left-radius: calc(0.25rem - 1px);
-  border-top-right-radius: calc(0.25rem - 1px);
-}
-.b-dropdown-text:last-child {
-  border-bottom-right-radius: calc(0.25rem - 1px);
-  border-bottom-left-radius: calc(0.25rem - 1px);
 }
 
 .input-group > .input-group-prepend > .btn-group > .btn,
@@ -10036,6 +10029,10 @@ input[type=color].form-control:disabled {
   background: rgba(227, 52, 47, 0.35);
 }
 
+.modal-backdrop:not(.show):not(.fade) {
+  opacity: 0.5;
+}
+
 .table.b-table.b-table-fixed {
   table-layout: fixed;
 }
@@ -10111,18 +10108,23 @@ input[type=color].form-control:disabled {
   .table.b-table.b-table-stacked-sm > caption {
     caption-side: top !important;
   }
-  .table.b-table.b-table-stacked-sm > tbody > tr > [data-label] {
-    display: grid;
-    grid-template-columns: 40% auto;
-    grid-gap: 0.25rem 1rem;
-  }
   .table.b-table.b-table-stacked-sm > tbody > tr > [data-label]::before {
     content: attr(data-label);
-    display: inline;
+    display: inline-block;
+    width: 40%;
+    float: left;
     text-align: right;
     overflow-wrap: break-word;
     font-weight: bold;
     font-style: normal;
+    padding: 0;
+    margin: 0;
+  }
+  .table.b-table.b-table-stacked-sm > tbody > tr > [data-label] > div {
+    display: inline-block;
+    width: calc(100% - 40%);
+    padding: 0 0 0 1rem;
+    margin: 0;
   }
   .table.b-table.b-table-stacked-sm > tbody > tr.top-row, .table.b-table.b-table-stacked-sm > tbody > tr.bottom-row {
     display: none;
@@ -10156,18 +10158,23 @@ input[type=color].form-control:disabled {
   .table.b-table.b-table-stacked-md > caption {
     caption-side: top !important;
   }
-  .table.b-table.b-table-stacked-md > tbody > tr > [data-label] {
-    display: grid;
-    grid-template-columns: 40% auto;
-    grid-gap: 0.25rem 1rem;
-  }
   .table.b-table.b-table-stacked-md > tbody > tr > [data-label]::before {
     content: attr(data-label);
-    display: inline;
+    display: inline-block;
+    width: 40%;
+    float: left;
     text-align: right;
     overflow-wrap: break-word;
     font-weight: bold;
     font-style: normal;
+    padding: 0;
+    margin: 0;
+  }
+  .table.b-table.b-table-stacked-md > tbody > tr > [data-label] > div {
+    display: inline-block;
+    width: calc(100% - 40%);
+    padding: 0 0 0 1rem;
+    margin: 0;
   }
   .table.b-table.b-table-stacked-md > tbody > tr.top-row, .table.b-table.b-table-stacked-md > tbody > tr.bottom-row {
     display: none;
@@ -10201,18 +10208,23 @@ input[type=color].form-control:disabled {
   .table.b-table.b-table-stacked-lg > caption {
     caption-side: top !important;
   }
-  .table.b-table.b-table-stacked-lg > tbody > tr > [data-label] {
-    display: grid;
-    grid-template-columns: 40% auto;
-    grid-gap: 0.25rem 1rem;
-  }
   .table.b-table.b-table-stacked-lg > tbody > tr > [data-label]::before {
     content: attr(data-label);
-    display: inline;
+    display: inline-block;
+    width: 40%;
+    float: left;
     text-align: right;
     overflow-wrap: break-word;
     font-weight: bold;
     font-style: normal;
+    padding: 0;
+    margin: 0;
+  }
+  .table.b-table.b-table-stacked-lg > tbody > tr > [data-label] > div {
+    display: inline-block;
+    width: calc(100% - 40%);
+    padding: 0 0 0 1rem;
+    margin: 0;
   }
   .table.b-table.b-table-stacked-lg > tbody > tr.top-row, .table.b-table.b-table-stacked-lg > tbody > tr.bottom-row {
     display: none;
@@ -10246,18 +10258,23 @@ input[type=color].form-control:disabled {
   .table.b-table.b-table-stacked-xl > caption {
     caption-side: top !important;
   }
-  .table.b-table.b-table-stacked-xl > tbody > tr > [data-label] {
-    display: grid;
-    grid-template-columns: 40% auto;
-    grid-gap: 0.25rem 1rem;
-  }
   .table.b-table.b-table-stacked-xl > tbody > tr > [data-label]::before {
     content: attr(data-label);
-    display: inline;
+    display: inline-block;
+    width: 40%;
+    float: left;
     text-align: right;
     overflow-wrap: break-word;
     font-weight: bold;
     font-style: normal;
+    padding: 0;
+    margin: 0;
+  }
+  .table.b-table.b-table-stacked-xl > tbody > tr > [data-label] > div {
+    display: inline-block;
+    width: calc(100% - 40%);
+    padding: 0 0 0 1rem;
+    margin: 0;
   }
   .table.b-table.b-table-stacked-xl > tbody > tr.top-row, .table.b-table.b-table-stacked-xl > tbody > tr.bottom-row {
     display: none;
@@ -10290,18 +10307,23 @@ input[type=color].form-control:disabled {
 .table.b-table.b-table-stacked > caption {
   caption-side: top !important;
 }
-.table.b-table.b-table-stacked > tbody > tr > [data-label] {
-  display: grid;
-  grid-template-columns: 40% auto;
-  grid-gap: 0.25rem 1rem;
-}
 .table.b-table.b-table-stacked > tbody > tr > [data-label]::before {
   content: attr(data-label);
-  display: inline;
+  display: inline-block;
+  width: 40%;
+  float: left;
   text-align: right;
   overflow-wrap: break-word;
   font-weight: bold;
   font-style: normal;
+  padding: 0;
+  margin: 0;
+}
+.table.b-table.b-table-stacked > tbody > tr > [data-label] > div {
+  display: inline-block;
+  width: calc(100% - 40%);
+  padding: 0 0 0 1rem;
+  margin: 0;
 }
 .table.b-table.b-table-stacked > tbody > tr.top-row, .table.b-table.b-table-stacked > tbody > tr.bottom-row {
   display: none;
@@ -10334,6 +10356,12 @@ input[type=color].form-control:disabled {
 }
 .b-toast.b-toast-solid .toast {
   background-color: white;
+}
+.b-toast .toast {
+  opacity: 1;
+}
+.b-toast .toast.fade:not(.show) {
+  opacity: 0;
 }
 .b-toast .toast .toast-body {
   display: block;
@@ -10474,6 +10502,8 @@ input[type=color].form-control:disabled {
 .b-toaster.b-toaster-top-right .b-toaster-slot, .b-toaster.b-toaster-top-left .b-toaster-slot, .b-toaster.b-toaster-top-center .b-toaster-slot, .b-toaster.b-toaster-top-full .b-toaster-slot, .b-toaster.b-toaster-bottom-right .b-toaster-slot, .b-toaster.b-toaster-bottom-left .b-toaster-slot, .b-toaster.b-toaster-bottom-center .b-toaster-slot, .b-toaster.b-toaster-bottom-full .b-toaster-slot {
   position: absolute;
   max-width: 350px;
+  width: 100%;
+  /* IE11 fix */
   left: 0;
   right: 0;
   padding: 0;

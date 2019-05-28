@@ -32,12 +32,12 @@ class Artwork extends JsonResource
                 'ratings' => $this->users->map(function ($item) {
                     return $item->pivot->rating;
                 })->reject(function ($value) {
-                    return $value == null;
+                    return $value === null;
                 }),
                 'comments' => $this->users->map(function ($item) {
                     return $item->pivot->comment;
                 })->reject(function ($value) {
-                    return $value == null || $value == '';
+                    return $value == null;
                 }),
             ]),
         ];
