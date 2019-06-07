@@ -39,6 +39,11 @@ class Artwork extends JsonResource
                 })->reject(function ($value) {
                     return $value == null;
                 }),
+                'photos' => $this->users->map(function ($item) {
+                    return $item->pivot->photo;
+                })->reject(function ($value) {
+                    return $value == null;
+                }),
             ]),
         ];
     }

@@ -66,6 +66,10 @@
         {{ row.value.length }}
       </template>
 
+      <template slot="photos" slot-scope="row">
+        {{ row.value.length }}
+      </template>
+
       <template slot="details" slot-scope="row">
         <b-button size="sm" @click="row.toggleDetails">
           {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
@@ -102,6 +106,17 @@
             <b>Comments:</b>
             <ul><li v-for="value in row.item.comments">{{ value }}</li></ul>
           </p>
+          <p v-if="row.item.photos.length">
+            <b>Photos:</b>
+            <gallery :images="url(row.item.photos)" :index="index" @close="index = null"></gallery>
+            <div
+              class="image"
+              v-for="(image, imageIndex) in url(row.item.photos)"
+              :key="imageIndex"
+              @click="index = imageIndex"
+              :style="{ backgroundImage: 'url(' + image + ')', backgroundSize: '100% 100%', width: '300px', height: '200px', display: 'inline-block', margin: '0 .5em' }">
+            </div>
+          </p>
         </b-card>
       </template>
     </b-table>
@@ -137,6 +152,7 @@
           { key: 'borough', label: 'Borough', sortable: true },
           { key: 'ratings', label: 'Ratings', sortable: true },
           { key: 'comments', label: 'Comments', sortable: true },
+          { key: 'photos', label: 'Photos', sortable: true },
           { key: 'details', _showDetails: true },
         ],
         totalRows: 0,
@@ -147,6 +163,7 @@
         sortDesc: false,
         sortDirection: 'asc',
         filter: null,
+        index: null
       }
     },
     computed: {
@@ -185,7 +202,25 @@
       med(arr) {
         arr.sort((a, b) => a - b)
         return (arr[(arr.length - 1) >> 1] + arr[arr.length >> 1]) / 2
+      },
+      url(arr) {
+        return arr.map(val => '../' + val.replace('public', 'storage'))
       }
+    },
+    components: {
+      'b-container': BootstrapVue.BContainer,
+      'b-row': BootstrapVue.BRow,
+      'b-col': BootstrapVue.BCol,
+      'b-form-group': BootstrapVue.BFormGroup,
+      'b-input-group': BootstrapVue.BInputGroup,
+      'b-form-input': BootstrapVue.BFormInput,
+      'b-input-group-append': BootstrapVue.BInputGroupAppend,
+      'b-button': BootstrapVue.BButton,
+      'b-form-select': BootstrapVue.BFormSelect,
+      'b-table': BootstrapVue.BTable,
+      'b-pagination': BootstrapVue.BPagination,
+      'b-card': BootstrapVue.BCard,
+      'gallery': VueGallery
     }
   }
 </script>

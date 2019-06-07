@@ -9,6 +9,7 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 window.BootstrapVue = require('bootstrap-vue');
+window.VueGallery = require('vue-gallery');
 
 /**
  * The following block of code may be used to automatically register your

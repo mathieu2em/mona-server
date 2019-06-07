@@ -139,6 +139,20 @@
       url: function (value) {
         return '../' + value.replace('public', 'storage')
       }
+    },
+    components: {
+      'b-container': BootstrapVue.BContainer,
+      'b-row': BootstrapVue.BRow,
+      'b-col': BootstrapVue.BCol,
+      'b-form-group': BootstrapVue.BFormGroup,
+      'b-input-group': BootstrapVue.BInputGroup,
+      'b-form-input': BootstrapVue.BFormInput,
+      'b-input-group-append': BootstrapVue.BInputGroupAppend,
+      'b-button': BootstrapVue.BButton,
+      'b-form-select': BootstrapVue.BFormSelect,
+      'b-table': BootstrapVue.BTable,
+      'b-pagination': BootstrapVue.BPagination,
+      'b-card': BootstrapVue.BCard,
     }
   }
 </script>
