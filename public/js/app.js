@@ -1849,6 +1849,21 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['artworks'],
   data: function data() {
@@ -1889,6 +1904,10 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         label: 'Comments',
         sortable: true
       }, {
+        key: 'photos',
+        label: 'Photos',
+        sortable: true
+      }, {
         key: 'details',
         _showDetails: true
       }],
@@ -1899,7 +1918,8 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       sortBy: null,
       sortDesc: false,
       sortDirection: 'asc',
-      filter: null
+      filter: null,
+      index: null
     };
   },
   computed: {
@@ -1949,7 +1969,27 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         return a - b;
       });
       return (arr[arr.length - 1 >> 1] + arr[arr.length >> 1]) / 2;
+    },
+    url: function url(arr) {
+      return arr.map(function (val) {
+        return '../' + val.replace('public', 'storage');
+      });
     }
+  },
+  components: {
+    'b-container': BootstrapVue.BContainer,
+    'b-row': BootstrapVue.BRow,
+    'b-col': BootstrapVue.BCol,
+    'b-form-group': BootstrapVue.BFormGroup,
+    'b-input-group': BootstrapVue.BInputGroup,
+    'b-form-input': BootstrapVue.BFormInput,
+    'b-input-group-append': BootstrapVue.BInputGroupAppend,
+    'b-button': BootstrapVue.BButton,
+    'b-form-select': BootstrapVue.BFormSelect,
+    'b-table': BootstrapVue.BTable,
+    'b-pagination': BootstrapVue.BPagination,
+    'b-card': BootstrapVue.BCard,
+    'gallery': VueGallery
   }
 });
 
@@ -2152,6 +2192,20 @@ __webpack_require__.r(__webpack_exports__);
     url: function url(value) {
       return '../' + value.replace('public', 'storage');
     }
+  },
+  components: {
+    'b-container': BootstrapVue.BContainer,
+    'b-row': BootstrapVue.BRow,
+    'b-col': BootstrapVue.BCol,
+    'b-form-group': BootstrapVue.BFormGroup,
+    'b-input-group': BootstrapVue.BInputGroup,
+    'b-form-input': BootstrapVue.BFormInput,
+    'b-input-group-append': BootstrapVue.BInputGroupAppend,
+    'b-button': BootstrapVue.BButton,
+    'b-form-select': BootstrapVue.BFormSelect,
+    'b-table': BootstrapVue.BTable,
+    'b-pagination': BootstrapVue.BPagination,
+    'b-card': BootstrapVue.BCard
   }
 });
 
@@ -68878,6 +68932,12 @@ var render = function() {
             }
           },
           {
+            key: "photos",
+            fn: function(row) {
+              return [_vm._v("\n      " + _vm._s(row.value.length) + "\n    ")]
+            }
+          },
+          {
             key: "details",
             fn: function(row) {
               return [
@@ -68899,103 +68959,153 @@ var render = function() {
             key: "row-details",
             fn: function(row) {
               return [
-                _c("b-card", [
-                  _c("p", [
-                    _c("b", [_vm._v("ID:")]),
+                _c(
+                  "b-card",
+                  [
+                    _c("p", [
+                      _c("b", [_vm._v("ID:")]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(_vm._s(row.item.id))])
+                    ]),
                     _vm._v(" "),
-                    _c("span", [_vm._v(_vm._s(row.item.id))])
-                  ]),
-                  _vm._v(" "),
-                  _c("p", [
-                    _c("b", [_vm._v("Dimensions:")]),
+                    _c("p", [
+                      _c("b", [_vm._v("Dimensions:")]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(_vm._s(row.item.dimensions))])
+                    ]),
                     _vm._v(" "),
-                    _c("span", [_vm._v(_vm._s(row.item.dimensions))])
-                  ]),
-                  _vm._v(" "),
-                  _c("p", [
-                    _c("b", [_vm._v("Materials:")]),
-                    _vm._v(" "),
-                    _c(
-                      "ul",
-                      _vm._l(row.item.materials, function(value) {
-                        return _c("li", [_vm._v(_vm._s(value.fr))])
-                      }),
-                      0
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("p", [
-                    _c("b", [_vm._v("Techniques:")]),
-                    _vm._v(" "),
-                    _c(
-                      "ul",
-                      _vm._l(row.item.techniques, function(value) {
-                        return _c("li", [_vm._v(_vm._s(value.fr))])
-                      }),
-                      0
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("p", [
-                    _c("b", [_vm._v("Location:")]),
-                    _vm._v(" "),
-                    _c("span", [
-                      _vm._v(
-                        "(" +
-                          _vm._s(row.item.location.lat) +
-                          ", " +
-                          _vm._s(row.item.location.lng) +
-                          ")"
+                    _c("p", [
+                      _c("b", [_vm._v("Materials:")]),
+                      _vm._v(" "),
+                      _c(
+                        "ul",
+                        _vm._l(row.item.materials, function(value) {
+                          return _c("li", [_vm._v(_vm._s(value.fr))])
+                        }),
+                        0
                       )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  row.item.ratings.len
-                    ? _c("p", [
-                        _c("b", [_vm._v("Ratings:")]),
-                        _vm._v(" "),
-                        _c("ul", [
-                          _c("li", [
-                            _c("b", [_vm._v("Minimum:")]),
-                            _vm._v(" "),
-                            _c("span", [_vm._v(_vm._s(row.item.ratings.min))])
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [
-                            _c("b", [_vm._v("Maximum:")]),
-                            _vm._v(" "),
-                            _c("span", [_vm._v(_vm._s(row.item.ratings.max))])
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [
-                            _c("b", [_vm._v("Average:")]),
-                            _vm._v(" "),
-                            _c("span", [_vm._v(_vm._s(row.item.ratings.avg))])
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [
-                            _c("b", [_vm._v("Median:")]),
-                            _vm._v(" "),
-                            _c("span", [_vm._v(_vm._s(row.item.ratings.med))])
-                          ])
-                        ])
-                      ])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  row.item.comments.length
-                    ? _c("p", [
-                        _c("b", [_vm._v("Comments:")]),
-                        _vm._v(" "),
-                        _c(
-                          "ul",
-                          _vm._l(row.item.comments, function(value) {
-                            return _c("li", [_vm._v(_vm._s(value))])
-                          }),
-                          0
+                    ]),
+                    _vm._v(" "),
+                    _c("p", [
+                      _c("b", [_vm._v("Techniques:")]),
+                      _vm._v(" "),
+                      _c(
+                        "ul",
+                        _vm._l(row.item.techniques, function(value) {
+                          return _c("li", [_vm._v(_vm._s(value.fr))])
+                        }),
+                        0
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("p", [
+                      _c("b", [_vm._v("Location:")]),
+                      _vm._v(" "),
+                      _c("span", [
+                        _vm._v(
+                          "(" +
+                            _vm._s(row.item.location.lat) +
+                            ", " +
+                            _vm._s(row.item.location.lng) +
+                            ")"
                         )
                       ])
-                    : _vm._e()
-                ])
+                    ]),
+                    _vm._v(" "),
+                    row.item.ratings.len
+                      ? _c("p", [
+                          _c("b", [_vm._v("Ratings:")]),
+                          _vm._v(" "),
+                          _c("ul", [
+                            _c("li", [
+                              _c("b", [_vm._v("Minimum:")]),
+                              _vm._v(" "),
+                              _c("span", [_vm._v(_vm._s(row.item.ratings.min))])
+                            ]),
+                            _vm._v(" "),
+                            _c("li", [
+                              _c("b", [_vm._v("Maximum:")]),
+                              _vm._v(" "),
+                              _c("span", [_vm._v(_vm._s(row.item.ratings.max))])
+                            ]),
+                            _vm._v(" "),
+                            _c("li", [
+                              _c("b", [_vm._v("Average:")]),
+                              _vm._v(" "),
+                              _c("span", [_vm._v(_vm._s(row.item.ratings.avg))])
+                            ]),
+                            _vm._v(" "),
+                            _c("li", [
+                              _c("b", [_vm._v("Median:")]),
+                              _vm._v(" "),
+                              _c("span", [_vm._v(_vm._s(row.item.ratings.med))])
+                            ])
+                          ])
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    row.item.comments.length
+                      ? _c("p", [
+                          _c("b", [_vm._v("Comments:")]),
+                          _vm._v(" "),
+                          _c(
+                            "ul",
+                            _vm._l(row.item.comments, function(value) {
+                              return _c("li", [_vm._v(_vm._s(value))])
+                            }),
+                            0
+                          )
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    row.item.photos.length
+                      ? _c(
+                          "p",
+                          [
+                            _c("b", [_vm._v("Photos:")]),
+                            _vm._v(" "),
+                            _c("gallery", {
+                              attrs: {
+                                images: _vm.url(row.item.photos),
+                                index: _vm.index
+                              },
+                              on: {
+                                close: function($event) {
+                                  _vm.index = null
+                                }
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      : _vm._e(),
+                    _vm._l(_vm.url(row.item.photos), function(
+                      image,
+                      imageIndex
+                    ) {
+                      return _c("div", {
+                        key: imageIndex,
+                        staticClass: "image",
+                        style: {
+                          backgroundImage: "url(" + image + ")",
+                          backgroundSize: "100% 100%",
+                          width: "300px",
+                          height: "200px",
+                          display: "inline-block",
+                          margin: "0 .5em"
+                        },
+                        on: {
+                          click: function($event) {
+                            _vm.index = imageIndex
+                          }
+                        }
+                      })
+                    }),
+                    _vm._v(" "),
+                    _c("p")
+                  ],
+                  2
+                )
               ]
             }
           }
