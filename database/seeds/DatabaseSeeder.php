@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             BoroughsTableSeeder::class,
             CategoriesTableSeeder::class,
             SubcategoriesTableSeeder::class,
+            CollectionsTableSeeder::class,
         ]);
     }
 }

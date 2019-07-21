@@ -28,6 +28,7 @@ class Artwork extends JsonResource
             'artists' => $this->artists,
             'borough' => $this->borough->name,
             'location' => $this->location,
+            'collection' => $this->collection->name ?? null,
             'details' => $this->details,
             $this->mergeWhen(Auth::user() && Auth::user()->isAdmin(), [
                 'ratings' => $this->users->map(function ($item) {

@@ -75,6 +75,14 @@ class Artwork extends Model
     }
 
     /**
+     * Get the collection that owns the artwork.
+     */
+    public function collection()
+    {
+        return $this->belongsTo('App\Artwork\Collection');
+    }
+
+    /**
      * The materials that belong to the artwork.
      */
     public function materials()
