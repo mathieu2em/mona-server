@@ -26,6 +26,7 @@ class SubcategoriesTableSeeder extends Seeder
             ['fr' => 'Technique Mixte',   'en' => 'Mixed Media'],
             ['fr' => 'Verre',             'en' => 'Glass'],
             ['fr' => 'Vitrail',           'en' => 'Stained Glass'],
+            ['fr' => 'Orfèvrerie',        'en' => 'Goldsmithery'],
         ]);
     }
 }

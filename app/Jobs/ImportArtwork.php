@@ -58,21 +58,19 @@ class ImportArtwork implements ShouldQueue
                     $matches[1] . $matches[3]);
             }
 
-            $category = Artwork\Category::firstOrCreate(
-                ['fr' => $artwork->CategorieObjet],
-                ['en' => $artwork->CategorieObjetAng]
-            );
+            $category = Artwork\Category::where(
+                'fr', $artwork->CategorieObjet
+            )->first();
 
-            $subcategory = Artwork\Subcategory::firstOrCreate(
-                ['fr' => $artwork->SousCategorieObjet],
-                ['en' => $artwork->SousCategorieObjetAng]
-            );
+            $subcategory = Artwork\Subcategory::where(
+                'fr', $artwork->SousCategorieObjet
+            )->first();
 
             $dimensions = array_filter($artwork->DimensionsGenerales);
 
-            $borough = Artwork\Borough::firstOrCreate(
-                ['name' => $artwork->Arrondissement]
-            );
+            $borough = Artwork\Borough::where(
+                'name', $artwork->Arrondissement
+            )->first();
 
             $location = new Point($artwork->CoordonneeLatitude,
                 $artwork->CoordonneeLongitude);
