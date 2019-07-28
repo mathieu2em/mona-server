@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddDetailsToArtworksTable extends Migration
+class AddColumnsToArtworksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,12 @@ class AddDetailsToArtworksTable extends Migration
     public function up()
     {
         Schema::table('artworks', function (Blueprint $table) {
-            $table->text('details')->nullable();
+            $table->unsignedBigInteger('collection_id')->nullable();
+            $table->text('details')->default("");
+            $table->boolean('edited')->default(false);
+
+            $table->foreign('collection_id')
+                  ->references('id')->on('collections');
         });
     }
 
@@ -26,7 +31,11 @@ class AddDetailsToArtworksTable extends Migration
     public function down()
     {
         Schema::table('artworks', function (Blueprint $table) {
+            $table->dropForeign(['collection_id']);
+
+            $table->dropColumn('edited');
             $table->dropColumn('details');
+            $table->dropColumn('collection_id');
         });
     }
 }

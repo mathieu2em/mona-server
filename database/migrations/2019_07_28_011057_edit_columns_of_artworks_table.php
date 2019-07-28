@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddCollectionToArtworksTable extends Migration
+class EditColumnsOfArtworksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,9 +14,9 @@ class AddCollectionToArtworksTable extends Migration
     public function up()
     {
         Schema::table('artworks', function (Blueprint $table) {
-            $table->unsignedBigInteger('collection_id')->nullable();
-            $table->foreign('collection_id')
-                  ->references('id')->on('collections');
+            $table->unsignedBigInteger('category_id')->nullable()->change();
+            $table->unsignedBigInteger('borough_id')->nullable()->change();
+            $table->json('dimensions')->default("[]")->change();
         });
     }
 
@@ -28,8 +28,9 @@ class AddCollectionToArtworksTable extends Migration
     public function down()
     {
         Schema::table('artworks', function (Blueprint $table) {
-            $table->dropForeign(['collection_id']);
-            $table->dropColumn('collection_id');
+            $table->json('dimensions')->change();
+            $table->unsignedBigInteger('borough_id')->change();
+            $table->unsignedBigInteger('category_id')->change();
         });
     }
 }
