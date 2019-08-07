@@ -27,6 +27,10 @@ class SubcategoriesTableSeeder extends Seeder
             ['fr' => 'Verre',             'en' => 'Glass'],
             ['fr' => 'Vitrail',           'en' => 'Stained Glass'],
             ['fr' => 'Orfèvrerie',        'en' => 'Goldsmithery'],
+            ['fr' => 'Estampe',           'en' => 'Print'],
+            ['fr' => 'Collage',           'en' => 'Collage'],
+            ['fr' => 'Gravure',           'en' => 'Engraving'],
+            ['fr' => 'Dessin',            'en' => 'Drawing'],
         ]);
     }
 }
