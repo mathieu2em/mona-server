@@ -76,9 +76,9 @@ class ImportArtwork implements ShouldQueue
                 $artwork->CoordonneeLongitude);
 
             $model = Artwork::updateOrCreate(
-                ['title' => $title, 'location' => $location],
-                ['produced_at' => $produced_at, 'dimensions' => $dimensions,
-                 'borough_id' => $borough->id, 'category_id' => $category->id,
+                ['title' => $title, 'borough_id' => $borough->id],
+                ['location' => $location, 'dimensions' => $dimensions,
+                 'produced_at' => $produced_at, 'category_id' => $category->id,
                  'subcategory_id' => $subcategory->id]
             );
 
@@ -90,7 +90,7 @@ class ImportArtwork implements ShouldQueue
                     $name = $artist->Prenom . ' ' . $artist->Nom;
                 }
 
-                $model->artists()->syncWithoutDetaching(Artist::updateOrCreate(
+                $model->artists()->syncWithoutDetaching(Artist::updateOrCreate( // XXX
                     ['name' => $name], ['collective' => $collective]
                 )->id);
             }
@@ -119,7 +119,7 @@ class ImportArtwork implements ShouldQueue
 
                 /* XXX */
                 if ($material[0] != '') {
-                    $model->materials()->syncWithoutDetaching(Artwork\Material::updateOrCreate(
+                    $model->materials()->syncWithoutDetaching(Artwork\Material::firstOrCreate( // XXX
                         ['fr' => $material[0]], ['en' => $material[1]]
                     )->id);
                 }
@@ -155,7 +155,7 @@ class ImportArtwork implements ShouldQueue
 
                 /* XXX */
                 if ($technique[0] != '') {
-                    $model->techniques()->syncWithoutDetaching(Artwork\Technique::updateOrCreate(
+                    $model->techniques()->syncWithoutDetaching(Artwork\Technique::firstOrCreate( // XXX
                         ['fr' => $technique[0]], ['en' => $technique[1]]
                     )->id);
                 }

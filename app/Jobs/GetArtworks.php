@@ -142,10 +142,10 @@ class GetArtworks implements ShouldQueue
 
                 try {
                     $model = Artwork::updateOrCreate(
-                        ['title' => $title, 'location' => $location],
-                        ['produced_at' => $produced_at, 'dimensions' => $dimensions,
+                        ['title' => $title, 'borough_id' => $borough],
+                        ['location' => $location, 'dimensions' => $dimensions,
                          'category_id' => $category, 'subcategory_id' => $subcategory,
-                         'borough_id' => $borough, 'details' => $details]
+                         'produced_at' => $produced_at, 'details' => $details]
                     );
                 } catch (JsonEncodingException $e) {
                 }

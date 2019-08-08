@@ -89,18 +89,17 @@ class ImportMural implements ShouldQueue
             $borough = Artwork\Borough::contains('area', $location)->first();
 
             $model = Artwork::updateOrCreate(
-                ['location' => $location],
-                ['produced_at' => $produced_at, 'dimensions' => [],
-                 'borough_id' => $borough->id, 'category_id' => $category->id]
+                ['category_id' => $category->id, 'borough_id' => $borough->id],
+                ['produced_at' => $produced_at, 'location' => $location]
             );
 
             $artists = preg_split('/,|:|&| et /i', preg_replace('/\./', '', $mural->artiste));
             if ($artists == ["A'SHOP-ANKHONE"]) {
-                $artists = ["A'Shop", 'Ankh One'];
+                $artists = ["AShop", 'Ankh One'];
             } else if ($artists == ['Snikr - Style Over Status']) {
                 $artists = ['Snikr', 'Style Over Status'];
-            } else if ($artists == ["A'Shop (Zek", 'Dodo Ose)']) {
-                $artists = ["A'Shop", 'Zek', 'Dodo Ose'];
+            } else if ($artists == ["AShop (Zek", 'Dodo Ose)']) {
+                $artists = ["AShop", 'Zek', 'Dodo Ose'];
             }
 
             foreach ($artists as $artist) {
@@ -112,7 +111,7 @@ class ImportMural implements ShouldQueue
 
                 $collective = $this->isCollective($name);
 
-                $model->artists()->syncWithoutDetaching(Artist::updateOrCreate(
+                $model->artists()->syncWithoutDetaching(Artist::firstOrCreate( // XXX
                     ['name' => $name], ['collective' => $collective]
                 )->id);
             }
@@ -139,9 +138,7 @@ class ImportMural implements ShouldQueue
             $artist == "A'Shop" ||
             $artist == 'Collectif Au pied du mur' ||
             $artist == 'Nayan' ||
-            $artist == 'Artducommun' ||
-            $artist == 'Les Hommes de lettres' ||
-            $artist == 'Style Over Status';
+            $artist == 'Les Hommes de lettres';
     }
 
     /**

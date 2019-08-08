@@ -68,14 +68,14 @@ class ImportCollection implements ShouldQueue
             $details = $artwork[13];
 
             $model = Artwork::updateOrCreate(
-                ['title' => $title, 'location' => $location],
-                ['produced_at' => $produced_at, 'dimensions' => $dimensions,
+                ['title' => $title, 'borough_id' => $borough->id],
+                ['location' => $location, 'dimensions' => $dimensions,
                  'category_id' => $category->id, 'subcategory_id' => $subcategory->id,
-                 'borough_id' => $borough->id, 'collection_id' => $collection->id,
+                 'produced_at' => $produced_at, 'collection_id' => $collection->id,
                  'details' => $details]
             );
 
-            $model->artists()->syncWithoutDetaching(Artist::updateOrCreate(
+            $model->artists()->syncWithoutDetaching(Artist::firstOrCreate( // XXX
                 ['name' => trim($artwork[14]) . " " . trim($artwork[15])]
             )->id);
 
@@ -86,28 +86,9 @@ class ImportCollection implements ShouldQueue
                 }
 
                 if ($technique = ucfirst($technique)) {
-                    $technique_en = null;
-                    if ($technique == "Cuit") {
-                        $technique_en = "Baked"; // XXX
-                    } else if ($technique == "Dépoli") {
-                        $technique_en = "Frosted"; // XXX
-                    } else if ($technique == "Laqué") {
-                        $technique_en = "Glossy"; // XXX
-                    } else if ($technique == "Verni") {
-                        $technique_en = "Varnished";
-                    } else if ($technique == "Anodisé") {
-                        $technique_en = "Anodized";
-                    }
-
-                    if ($technique_en) {
-                        $model->techniques()->syncWithoutDetaching(Artwork\Technique::updateOrCreate(
-                            ['fr' => $technique], ['en' => $technique_en]
-                        )->id);
-                    } else {
-                        $model->techniques()->syncWithoutDetaching(Artwork\Technique::updateOrCreate(
-                            ['fr' => $technique],
-                        )->id);
-                    }
+                    $model->techniques()->syncWithoutDetaching(Artwork\Technique::firstOrCreate( // XXX
+                        ['fr' => $technique],
+                    )->id);
                 }
             }
 
@@ -142,11 +123,11 @@ class ImportCollection implements ShouldQueue
                     }
 
                     if ($material_en) {
-                        $model->materials()->syncWithoutDetaching(Artwork\Material::updateOrCreate(
+                        $model->materials()->syncWithoutDetaching(Artwork\Material::updateOrCreate( // XXX
                             ['fr' => $material], ['en' => $material_en]
                         )->id);
                     } else {
-                        $model->materials()->syncWithoutDetaching(Artwork\Material::updateOrCreate(
+                        $model->materials()->syncWithoutDetaching(Artwork\Material::firstOrCreate( // XXX
                             ['fr' => $material],
                         )->id);
                     }
@@ -209,7 +190,7 @@ class ImportCollection implements ShouldQueue
 
             $model = Artwork::updateOrCreate(
                 ['title' => $title, 'borough_id' => $borough->id ?? null],
-                ['produced_at' => $produced_at, 'location' => $location,
+                ['location' => $location, 'produced_at' => $produced_at,
                  'details' => $details, 'collection_id' => $collection->id] // XXX
             );
 
@@ -226,10 +207,8 @@ class ImportCollection implements ShouldQueue
                     $artist = "Embassy of Imagination";
                 }
 
-                $collective = $artist == "MU" || $artist == "42UC" ||
-                    $artist == "Embassy of Imagination";
-                $model->artists()->syncWithoutDetaching(Artist::updateOrCreate(
-                    ['name' => $artist], ['collective' => $collective]
+                $model->artists()->syncWithoutDetaching(Artist::firstOrCreate( // XXX
+                    ['name' => $artist],
                 )->id);
             }
 
@@ -273,16 +252,17 @@ class ImportCollection implements ShouldQueue
             }
 
             $model = Artwork::updateOrCreate(
-                ['title' => $title, 'location' => $location],
-                ['details' => $details, 'collection_id' => $collection->id] // XXX
+                ['title' => $title, 'borough_id' => null],
+                ['location' => $location, 'details' => $details,
+                 'collection_id' => $collection->id] // XXX
             );
 
             preg_match('/(?<=:).*(?=<)/', $artwork->description, $matches);
             $artists = preg_split('/ et |, /', trim(preg_replace('/<.*>/', '', $matches[0])));
 
             foreach ($artists as $artist) {
-                $model->artists()->syncWithoutDetaching(Artist::updateOrCreate(
-                    ['name' => $artist], ['collective' => false]
+                $model->artists()->syncWithoutDetaching(Artist::firstOrCreate( // XXX
+                    ['name' => $artist],
                 )->id);
             }
 
