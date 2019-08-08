@@ -11,26 +11,62 @@ class SubcategoriesTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('subcategories')->insert([
-            ['fr' => 'Bois/Menuiserie',   'en' => 'Wood/Woodwork'],
-            ['fr' => 'Céramique',         'en' => 'Ceramic'],
-            ['fr' => 'Design Industriel', 'en' => 'Industrial Design'],
-            ['fr' => 'Émaux',             'en' => 'Enamels'],
-            ['fr' => 'Installation',      'en' => 'Installation'],
-            ['fr' => 'Mobilier',          'en' => 'Furnishings'],
-            ['fr' => 'Mosaïque',          'en' => 'Mosaic'],
-            ['fr' => 'Multimédia',        'en' => 'Multimedia'],
-            ['fr' => 'Peinture',          'en' => 'Painting'],
-            ['fr' => 'Photographie',      'en' => 'Photography'],
-            ['fr' => 'Sculpture',         'en' => 'Sculpture'],
-            ['fr' => 'Technique Mixte',   'en' => 'Mixed Media'],
-            ['fr' => 'Verre',             'en' => 'Glass'],
-            ['fr' => 'Vitrail',           'en' => 'Stained Glass'],
-            ['fr' => 'Orfèvrerie',        'en' => 'Goldsmithery'],
-            ['fr' => 'Estampe',           'en' => 'Print'],
-            ['fr' => 'Collage',           'en' => 'Collage'],
-            ['fr' => 'Gravure',           'en' => 'Engraving'],
-            ['fr' => 'Dessin',            'en' => 'Drawing'],
-        ]);
+        DB::table('subcategories')->updateOrInsert(
+            ['fr' => 'Bois/Menuiserie'], ['en' => 'Wood/Woodwork']
+        );
+        DB::table('subcategories')->updateOrInsert(
+            ['fr' => 'Céramique'], ['en' => 'Ceramic']
+        );
+        DB::table('subcategories')->updateOrInsert(
+            ['fr' => 'Design Industriel'], ['en' => 'Industrial Design']
+        );
+        DB::table('subcategories')->updateOrInsert(
+            ['fr' => 'Émaux'], ['en' => 'Enamels']
+        );
+        DB::table('subcategories')->updateOrInsert(
+            ['fr' => 'Installation'], ['en' => 'Installation']
+        );
+        DB::table('subcategories')->updateOrInsert(
+            ['fr' => 'Mobilier'], ['en' => 'Furnishings']
+        );
+        DB::table('subcategories')->updateOrInsert(
+            ['fr' => 'Mosaïque'], ['en' => 'Mosaic']
+        );
+        DB::table('subcategories')->updateOrInsert(
+            ['fr' => 'Multimédia'], ['en' => 'Multimedia']
+        );
+        DB::table('subcategories')->updateOrInsert(
+            ['fr' => 'Peinture'], ['en' => 'Painting']
+        );
+        DB::table('subcategories')->updateOrInsert(
+            ['fr' => 'Photographie'], ['en' => 'Photography']
+        );
+        DB::table('subcategories')->updateOrInsert(
+            ['fr' => 'Sculpture'], ['en' => 'Sculpture']
+        );
+        DB::table('subcategories')->updateOrInsert(
+            ['fr' => 'Technique Mixte'], ['en' => 'Mixed Media']
+        );
+        DB::table('subcategories')->updateOrInsert(
+            ['fr' => 'Verre'], ['en' => 'Glass']
+        );
+        DB::table('subcategories')->updateOrInsert(
+            ['fr' => 'Vitrail'], ['en' => 'Stained Glass']
+        );
+        DB::table('subcategories')->updateOrInsert(
+            ['fr' => 'Orfèvrerie'], ['en' => 'Goldsmithery']
+        );
+        DB::table('subcategories')->updateOrInsert(
+            ['fr' => 'Estampe'], ['en' => 'Print']
+        );
+        DB::table('subcategories')->updateOrInsert(
+            ['fr' => 'Collage'], ['en' => 'Collage']
+        );
+        DB::table('subcategories')->updateOrInsert(
+            ['fr' => 'Gravure'], ['en' => 'Engraving']
+        );
+        DB::table('subcategories')->updateOrInsert(
+            ['fr' => 'Dessin'], ['en' => 'Drawing']
+        );
     }
 }

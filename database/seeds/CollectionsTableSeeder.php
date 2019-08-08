@@ -11,10 +11,14 @@ class CollectionsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('collections')->insert([
-            ['name' => 'Dose Culture'],
-            ['name' => 'MU'],
-            ['name' => 'Université de Montréal'],
-        ]);
+        DB::table('collections')->updateOrInsert(
+            ['name' => 'Dose Culture']
+        );
+        DB::table('collections')->updateOrInsert(
+            ['name' => 'MU']
+        );
+        DB::table('collections')->updateOrInsert(
+            ['name' => 'Université de Montréal']
+        );
     }
 }

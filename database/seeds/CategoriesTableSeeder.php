@@ -11,10 +11,14 @@ class CategoriesTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('categories')->insert([
-            ['fr' => 'Beaux-Arts',      'en' => 'Fine Arts'],
-            ['fr' => 'Arts Décoratifs', 'en' => 'Decorative Arts'],
-            ['fr' => 'Murales',         'en' => 'Murals'],
-        ]);
+        DB::table('categories')->updateOrInsert(
+            ['fr' => 'Beaux-Arts'], ['en' => 'Fine Arts']
+        );
+        DB::table('categories')->updateOrInsert(
+            ['fr' => 'Arts Décoratifs'], ['en' => 'Decorative Arts']
+        );
+        DB::table('categories')->updateOrInsert(
+            ['fr' => 'Murales'], ['en' => 'Murals']
+        );
     }
 }
