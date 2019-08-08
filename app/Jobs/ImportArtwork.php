@@ -137,18 +137,10 @@ class ImportArtwork implements ShouldQueue
                     $technique[1] = 'Aluchromy';
                 } else if ($technique[0] == 'Contre-collé sur bois') {
                     $technique[1] = 'Laminated on wood';
-                } else if ($technique[0] == 'Tourné') {
-                    $technique[1] = 'Turned';
                 } else if ($technique[0] == 'Béton coulé (stèles)') {
                     $technique[1] = 'Poured concrete (stelae)';
                 } else if ($technique[0] == 'Aluminium taillé') {
                     $technique[1] = 'Cut aluminum';
-                } else if ($technique[0] == 'Soudé') {
-                    $technique[1] = 'Welded';
-                } else if ($technique[0] == 'Laminé') {
-                    $technique[1] = 'Laminated';
-                } else if ($technique[0] == 'Pulvérisé') {
-                    $technique[1] = 'Pulverised';
                 } else if ($technique[0] == 'Soudées ensemble') {
                     $technique[1] = 'Welded together';
                 } else if ($technique[0] == 'Granit poli') {
