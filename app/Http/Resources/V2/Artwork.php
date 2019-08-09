@@ -26,7 +26,7 @@ class Artwork extends JsonResource
             'materials' => $this->materials,
             'techniques' => $this->techniques,
             'artists' => $this->artists,
-            'borough' => $this->borough->name,
+            'borough' => $this->borough->name ?? null,
             'location' => $this->location,
             'collection' => $this->collection->name ?? null,
             'details' => $this->details,
