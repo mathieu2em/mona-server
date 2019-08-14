@@ -150,6 +150,7 @@ class ImportCollection implements ShouldQueue
             Storage::get('private/MU.csv')), 1, -1));
         $this->progressBar->setMaxSteps(count($csv));
 
+        $category = Artwork\Category::where('fr', 'Murales')->first();
         $collection = Artwork\Collection::where(
             'name', 'MU'
         )->first();
@@ -191,7 +192,8 @@ class ImportCollection implements ShouldQueue
             $model = Artwork::updateOrCreate(
                 ['title' => $title, 'borough_id' => $borough->id ?? null],
                 ['location' => $location, 'produced_at' => $produced_at,
-                 'details' => $details, 'collection_id' => $collection->id] // XXX
+                 'details' => $details, 'collection_id' => $collection->id,
+                 'category_id' => $category->id] // XXX
             );
 
             /* XXX */

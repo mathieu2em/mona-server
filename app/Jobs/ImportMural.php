@@ -69,6 +69,9 @@ class ImportMural implements ShouldQueue
     {
         $this->handleBoroughs();
         $category = Artwork\Category::where('fr', 'Murales')->first();
+        $collection = Artwork\Collection::where(
+            'name', 'Murales subventionnées, Ville de Montréal'
+        )->first();
 
         $json = json_decode(file_get_contents(sprintf($this->urlFormat,
             '53d2e586-6e7f-4eae-89a1-2cfa7fc29fa0',
@@ -90,7 +93,8 @@ class ImportMural implements ShouldQueue
 
             $model = Artwork::updateOrCreate(
                 ['category_id' => $category->id, 'borough_id' => $borough->id],
-                ['produced_at' => $produced_at, 'location' => $location]
+                ['produced_at' => $produced_at, 'location' => $location,
+                 'collection_id' => $collection->id]
             );
 
             $artists = preg_split('/,|:|&| et /i', preg_replace('/\./', '', $mural->artiste));

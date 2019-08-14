@@ -12,7 +12,13 @@ class CollectionsTableSeeder extends Seeder
     public function run()
     {
         DB::table('collections')->updateOrInsert(
+            ['name' => 'Bureau d\'art public, Ville de Montréal']
+        );
+        DB::table('collections')->updateOrInsert(
             ['name' => 'Dose Culture']
+        );
+        DB::table('collections')->updateOrInsert(
+            ['name' => 'Murales subventionnées, Ville de Montréal']
         );
         DB::table('collections')->updateOrInsert(
             ['name' => 'MU']

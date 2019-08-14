@@ -45,6 +45,10 @@ class ImportArtwork implements ShouldQueue
             '18705524-c8a6-49a0-bca7-92f493e6d329')));
         $this->progressBar->setMaxSteps(count($json));
 
+        $collection = Artwork\Collection::where(
+            'name', 'Bureau d\'art public, Ville de Montréal'
+        )->first();
+
         $this->progressBar->start();
         foreach ($json as $artwork) {
             $this->normalize($artwork);
@@ -79,7 +83,7 @@ class ImportArtwork implements ShouldQueue
                 ['title' => $title, 'borough_id' => $borough->id],
                 ['location' => $location, 'dimensions' => $dimensions,
                  'produced_at' => $produced_at, 'category_id' => $category->id,
-                 'subcategory_id' => $subcategory->id]
+                 'subcategory_id' => $subcategory->id, 'collection_id' => $collection->id]
             );
 
             /* Artists */
