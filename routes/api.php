@@ -28,8 +28,9 @@ Route::namespace('V2')->middleware('json')->group(function () {
     });
 });
 
+/*
 Route::namespace('V1')->prefix('v1')->group(function () {
-    // Route::get('loadJson1', 'LoadJson');
+    Route::get('loadJson1', 'LoadJson');
 
     Route::get('logUser', 'Auth\LoginController@login');
     Route::get('createUser', 'Auth\RegisterController@register');
@@ -38,3 +39,4 @@ Route::namespace('V1')->prefix('v1')->group(function () {
     Route::get('addComment', 'UserController@comment');
     Route::post('addPicture', 'UserController@photograph');
 });
+*/
