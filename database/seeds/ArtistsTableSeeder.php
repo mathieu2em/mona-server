@@ -11,62 +11,32 @@ class ArtistsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('artists')->updateOrInsert(
-            ['name' => '4U2C'], ['collective' => true]
-        );
-        DB::table('artists')->updateOrInsert(
-            ['name' => 'Artducommun'], ['collective' => true]
-        );
-        DB::table('artists')->updateOrInsert(
-            ['name' => 'AShop'], ['collective' => true]
-        );
-        DB::table('artists')->updateOrInsert(
-            ['name' => 'Atelier TAG'], ['collective' => true]
-        );
-        DB::table('artists')->updateOrInsert(
-            ['name' => 'ATOMIC3'], ['collective' => true]
-        );
-        DB::table('artists')->updateOrInsert(
-            ['name' => 'BGL'], ['collective' => true]
-        );
-        DB::table('artists')->updateOrInsert(
-            ['name' => 'Cooke-Sasseville'], ['collective' => true]
-        );
-        DB::table('artists')->updateOrInsert(
-            ['name' => 'Daily tous les jours'], ['collective' => true]
-        );
-        DB::table('artists')->updateOrInsert(
-            ['name' => 'Doyon-Rivest'], ['collective' => true]
-        );
-        DB::table('artists')->updateOrInsert(
-            ['name' => 'Embassy of Imagination'], ['collective' => true]
-        );
-        DB::table('artists')->updateOrInsert(
-            ['name' => 'EN MASSE'], ['collective' => true]
-        );
-        DB::table('artists')->updateOrInsert(
-            ['name' => 'Hoarkor'], ['collective' => true]
-        );
-        DB::table('artists')->updateOrInsert(
-            ['name' => 'In Situ'], ['collective' => true]
-        );
-        DB::table('artists')->updateOrInsert(
-            ['name' => 'Les Industries perdues'], ['collective' => true]
-        );
-        DB::table('artists')->updateOrInsert(
-            ['name' => 'Météore Design'], ['collective' => true]
-        );
-        DB::table('artists')->updateOrInsert(
-            ['name' => 'Mosaika Art'], ['collective' => true]
-        );
-        DB::table('artists')->updateOrInsert(
-            ['name' => 'MU'], ['collective' => true]
-        );
-        DB::table('artists')->updateOrInsert(
-            ['name' => 'Parade'], ['collective' => true]
-        );
-        DB::table('artists')->updateOrInsert(
-            ['name' => 'Style Over Status'], ['collective' => true]
-        );
+        $collectives = [
+            '4U2C',
+            'Artducommun',
+            'AShop',
+            'Atelier TAG',
+            'ATOMIC3',
+            'BGL',
+            'Cooke-Sasseville',
+            'Daily tous les jours',
+            'Doyon-Rivest',
+            'Embassy of Imagination',
+            'EN MASSE',
+            'Hoarkor',
+            'In Situ',
+            'Les Industries perdues',
+            'Météore Design',
+            'Mosaika Art',
+            'MU',
+            'Parade',
+            'Style Over Status',
+        ];
+
+        foreach ($collectives as $collective) {
+            DB::table('artists')->updateOrInsert(
+                ['name' => $collective], ['collective' => true]
+            );
+        }
     }
 }
