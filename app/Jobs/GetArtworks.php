@@ -137,6 +137,22 @@ class GetArtworks implements ShouldQueue
                     }
                 }
 
+                $collection = null;
+                $proprietaire = $crawler->filterXPath("//div[contains(@class, 'detail-proprietaire')]/strong");
+                if ($proprietaire->count()) {
+                    $proprietaire = trim($proprietaire->text());
+                    if ($proprietaire == "Ville de Montréal") {
+                        $proprietaire = "Bureau d'art public, Ville de Montréal";
+                    }
+
+                    $collection = Artwork\Collection::where(
+                        'name', $proprietaire
+                    )->first();
+                    if ($collection) {
+                        $collection = $collection->id;
+                    }
+                }
+
                 $details = $crawler->filterXPath("//div[contains(@class, 'detail-localisation')]/strong");
                 $details = $details->count() ? trim($details->text()) : "";
 
@@ -145,7 +161,8 @@ class GetArtworks implements ShouldQueue
                         ['title' => $title, 'borough_id' => $borough],
                         ['location' => $location, 'dimensions' => $dimensions,
                          'category_id' => $category, 'subcategory_id' => $subcategory,
-                         'produced_at' => $produced_at, 'details' => $details]
+                         'produced_at' => $produced_at, 'details' => $details,
+                         'collection_id' => $collection]
                     );
                 } catch (JsonEncodingException $e) {
                 }
