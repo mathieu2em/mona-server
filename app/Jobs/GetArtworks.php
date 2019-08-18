@@ -113,6 +113,13 @@ class GetArtworks implements ShouldQueue
                     )->first();
                     if ($subcategory) {
                         $subcategory = $subcategory->id;
+                        if (!$category) {
+                            if (in_array($subcategory, [5, 8, 9, 10, 11, 12])) {
+                                $category = 1;
+                            } else if (in_array($subcategory, [2, 6, 7, 13, 14, 15])) {
+                                $category = 2;
+                            }
+                        }
                     }
                 }
 

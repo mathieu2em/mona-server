@@ -64,4 +64,12 @@ class Artist extends Model
     {
         return $this->collective ? $this->name : null;
     }
+
+    /**
+     * The artworks that belong to the artist.
+     */
+    public function artworks()
+    {
+        return $this->belongsToMany('App\Artwork');
+    }
 }

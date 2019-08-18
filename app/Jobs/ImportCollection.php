@@ -231,6 +231,7 @@ class ImportCollection implements ShouldQueue
         $artworks = $json->operationalLayers[1]->featureCollection->layers[0]->featureSet->features;
         $this->progressBar->setMaxSteps(count($artworks));
 
+        $category = Artwork\Category::where('fr', 'Murales')->first();
         $collection = Artwork\Collection::where(
             'name', 'Dose Culture'
         )->first();
@@ -255,8 +256,8 @@ class ImportCollection implements ShouldQueue
 
             $model = Artwork::updateOrCreate(
                 ['title' => $title, 'borough_id' => null],
-                ['location' => $location, 'details' => $details,
-                 'collection_id' => $collection->id] // XXX
+                ['location' => $location, 'category_id' => $category->id,
+                 'details' => $details, 'collection_id' => $collection->id] // XXX
             );
 
             preg_match('/(?<=:).*(?=<)/', $artwork->description, $matches);
