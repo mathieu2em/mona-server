@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             CategoriesTableSeeder::class,
             SubcategoriesTableSeeder::class,
             CollectionsTableSeeder::class,
+            MaterialsTableSeeder::class,
             TechniquesTableSeeder::class,
             ArtistsTableSeeder::class,
         ]);

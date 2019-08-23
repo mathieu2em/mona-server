@@ -12,12 +12,12 @@ class SubcategoriesTableSeeder extends Seeder
     public function run()
     {
         $subcategories = [
-            'Bois/Menuiserie'   => 'Wood/Woodwork',
+            'Menuiserie'        => 'Woodwork',
             'Céramique'         => 'Ceramic',
             'Design Industriel' => 'Industrial Design',
             'Émaux'             => 'Enamels',
             'Installation'      => 'Installation',
-            'Mobilier'          => 'Furnishings',
+            'Mobilier'          => 'Furniture',
             'Mosaïque'          => 'Mosaic',
             'Multimédia'        => 'Multimedia',
             'Peinture'          => 'Painting',

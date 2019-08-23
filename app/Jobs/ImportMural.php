@@ -36,38 +36,12 @@ class ImportMural implements ShouldQueue
     }
 
     /**
-     * TODO.
-     *
-     * @return void
-     */
-    public function handleBoroughs()
-    {
-        $json = json_decode(file_get_contents(sprintf($this->urlFormat,
-            '00bd85eb-23aa-4669-8f1b-ba9a000e3dd8',
-            'e9b0f927-8f75-458c-8fda-b5da65cc8b73')));
-
-        foreach ($json->features as $feature) {
-            if ($feature->properties->TYPE == 'Arrondissement') {
-                $abbr = $feature->properties->ABREV;
-                $area = MultiPolygon::fromJson(GeoJson::jsonUnserialize(
-                    $feature->geometry
-                ));
-
-                Artwork\Borough::where('abbr', $abbr)->update([
-                    'area' => $area,
-                ]);
-            }
-        }
-    }
-
-    /**
      * Execute the job.
      *
      * @return void
      */
     public function handle()
     {
-        $this->handleBoroughs();
         $category = Artwork\Category::where('fr', 'Murales')->first();
         $collection = Artwork\Collection::where(
             'name', 'Murales subventionnées, Ville de Montréal'

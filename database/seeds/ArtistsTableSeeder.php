@@ -12,25 +12,37 @@ class ArtistsTableSeeder extends Seeder
     public function run()
     {
         $collectives = [
+            '123Klan',
             '4U2C',
             'Artducommun',
-            'AShop',
+            'Artgang Montreal',
+            'Ashop',
+            'Atelier in situ',
             'Atelier TAG',
             'ATOMIC3',
+            'Au pied du mur',
             'BGL',
             'Cooke-Sasseville',
             'Daily tous les jours',
             'Doyon-Rivest',
+            'Ella & Pitr',
             'Embassy of Imagination',
             'EN MASSE',
             'Hoarkor',
-            'In Situ',
-            'Les Industries perdues',
+            'Humà Design',
+            'K6A',
+            'Kolab',
+            'La Camaraderie',
+            'Les Hommes de Lettres',
+            'Les industries perdues',
             'Météore Design',
-            'Mosaika Art',
+            'Mosaika',
             'MU',
-            'Parade',
+            'Nayan',
             'Style Over Status',
+            'The Cheap Art Collective',
+
+            'Jeunes résidents de Place Normandie',
         ];
 
         foreach ($collectives as $collective) {
