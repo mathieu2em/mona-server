@@ -47,12 +47,20 @@ class ArtworkController extends Controller
     {
         $this->validator($request->all())->validate();
 
-        $photo = $request->file('photo');
-        Auth::user()->artworks()->syncWithoutDetaching([$request->id => [
-            'rating' => $request->rating,
-            'comment' => $request->comment,
-            'photo' => $photo ? $photo->store('public/photos') : null,
-        ]]);
+        $attrs = [];
+        if ($rating = $request->rating)
+            $attrs['rating'] = $rating;
+        if ($comment = $request->comment)
+            $attrs['comment'] = $comment;
+        if ($photo = $request->file('photo'))
+            $attrs['photo'] = $photo->store('public/photos');
+
+        $artworks = Auth::user()->artworks();
+        if ($artworks->find($request->id)) {
+            $artworks->updateExistingPivot($request->id, $attrs);
+        } else {
+            $artworks->syncWithoutDetaching([$request->id => $attrs]);
+        }
     }
 
     /**
