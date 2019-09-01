@@ -17,9 +17,6 @@ class ImportArtwork implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private $urlFormat;
-    private $progressBar;
-
     /**
      * Create a new job instance.
      *
@@ -31,6 +28,114 @@ class ImportArtwork implements ShouldQueue
             'dataset/%s/resource/%s/download';
 
         $this->progressBar = new ProgressBar(new ConsoleOutput());
+
+        $this->subcategories = [
+            'Bois/menuiserie d\'art' => 'Menuiserie',
+            'Design industriel'      => 'Design Industriel',
+            'Mosaique'               => 'Mosaïque',
+            'Techniques mixtes'      => 'Technique Mixte',
+        ];
+
+        $this->artists = [
+            'Cardinal Hardy et associés'    => ['Cardinal Hardy'],
+            'Yérassimo (Gerasimos) Sklavos' => ['Yérassimo Sklavos', 'Gerasimos'],
+            'J.L. Mott'                     => ['J. L. Mott'],
+        ];
+
+        /* XXX */
+        $this->materials = [
+            'Acier corten'            => 'Acier patinable',
+            'Acier Corten'            => 'Acier patinable',
+            'Acier de Corten'         => 'Acier patinable',
+            'Acier intempérique'      => 'Acier patinable',
+            'Corten'                  => 'Acier patinable',
+            'Béton ductal'            => 'Béton hautes performances',
+            'DEL'                     => 'Diode électroluminescente',
+            'Chrome poli'             => 'Chrome',
+            'Fonte de fer'            => 'Fonte',
+            'Criblure granitique'     => 'Granit',
+            'Luminaire'               => 'Lumière',
+            'Dispositif d\'éclairage' => 'Lumière',
+            'Briques'                 => 'Brique',
+            'Pavés'                   => 'Pavé',
+            'Tissus'                  => 'Tissu',
+            'Pierre indiana'          => 'Pierre Indiana',
+            'Impression'              => '',
+            'Matériaux divers'        => '',
+            'Arbres'                  => '',
+            'Arbustes'                => '',
+            'Plantes'                 => '',
+            'Végétaux'                => '',
+            'Graminées'               => '',
+            'Serrureries'             => '',
+            'Livre'                   => '',
+            'Plantes indigènes'       => '',
+            'Ceramics'                => 'Ceramic',
+            'Cobblestones'            => 'Cobblestone',
+            'Mortat'                  => 'Mortar',
+            'Fiber glass'             => 'Fiberglass',
+            'Fiber-glass'             => 'Fiberglass',
+            'Pierres'                 => 'Pierre',
+            'Stones'                  => 'Stone',
+            'Tourbe'                  => 'Gazon',
+            'Aluminum'                => 'Aluminium',
+        ];
+
+        /* XXX */
+        $this->techniques = [
+            'Impression'                                 => 'Imprimé',
+            'Découpées'                                  => 'Découpé',
+            'Polissage'                                  => 'Poli',
+            'Coupage'                                    => 'Coupé',
+            'Pliées'                                     => 'Courbé',
+            'Vidéoprojections'                           => 'Projeté',
+            'Mixte'                                      => '',
+            'Multiple'                                   => '',
+            'Inscription'                                => '',
+            'Techniques multiples'                       => '',
+            'Aluchromie'                                 => '',
+            'Souder'                                     => 'Soudé',
+            'Œuvre peinte'                               => 'Peint',
+            'Peints'                                     => 'Peint',
+            'Peinturé'                                   => 'Peint',
+            'Peinture'                                   => 'Peint',
+            'Soudure'                                    => 'Soudé',
+            'Soudées'                                    => 'Soudé',
+            'Soudés'                                     => 'Soudé',
+            'Soudage'                                    => 'Soudé',
+            'Coulée'                                     => 'Coulé',
+            'Boulonnée'                                  => 'Boulonné',
+            'Boulonnées'                                 => 'Boulonné',
+            'Boulonnage'                                 => 'Boulonné',
+            'Anodisation'                                => 'Anodisé',
+            'Polissage'                                  => 'Poli',
+            'Modelage'                                   => 'Modelé',
+            'Moulage'                                    => 'Moulé',
+            'Assemblage'                                 => 'Assemblé',
+            'Soudées les unes aux autres'                => 'Soudé',
+            'Soudées entre elles'                        => 'Soudé',
+            'Soudées ensemble'                           => 'Soudé',
+            'Contre-collé sur bois'                      => 'Contrecollé sur bois',
+            'Découpage au laser'                         => 'Découpe au laser',
+            'Coulée industriel'                          => 'Coulée industrielle',
+            'Fonte à la cire perdue'                     => 'Cire perdue',
+            'Coulé à la cire perdue'                     => 'Cire perdue',
+            'Feuilles d\'aluminium anodisé'              => 'Feuilles d\'aluminium anodisées',
+            'Fonte au sable'                             => 'Moulage en sable',
+            'Frittage laser sélectif'                    => 'Frittage sélectif par laser',
+            'Installation par ancrages chimique'         => 'Installation par ancrage chimique',
+            'Impression sur papier ilfochrome'           => 'Impression sur papier Ilfochrome',
+            'Statue actuelle : fonte'                    => '',
+            'Fontaine : moulage'                         => 'Moulé',
+            'Aluminium: découpé'                         => 'Découpé',
+            'Assemblé Granit: gravé au jet de sable'     => 'Gravé au jet de sable',
+            'Finition effectuée par meuleuse à disque'   => 'Fini avec une meuleuse à disque',
+            'Ciment fondu'                               => 'Ciment alumineux',
+            'Statue originale : cuivre repoussé-estampé' => 'Cuivre repoussé',
+            '23 sections de bronze moulées par enrobage' => 'Bronze moulé',
+            'Image lumineuse projettée au sol'           => 'Image illuminée projetée sur le sol',
+            'Impressions numériques montées à froid sur support de plexiglas' => 'Impression numérique montée à froid sur support en plexiglas',
+        ];
     }
 
     /**
@@ -40,9 +145,12 @@ class ImportArtwork implements ShouldQueue
      */
     public function handle()
     {
-        $json = json_decode(file_get_contents(sprintf($this->urlFormat,
-            '2980db3a-9eb4-4c0e-b7c6-a6584cb769c9',
-            '18705524-c8a6-49a0-bca7-92f493e6d329')));
+        $dataset  = '2980db3a-9eb4-4c0e-b7c6-a6584cb769c9';
+        $resource = '18705524-c8a6-49a0-bca7-92f493e6d329';
+
+        $json = json_decode(file_get_contents(sprintf(
+            $this->urlFormat, $dataset, $resource
+        )));
         $this->progressBar->setMaxSteps(count($json));
 
         $collection = Artwork\Collection::where(
@@ -70,7 +178,7 @@ class ImportArtwork implements ShouldQueue
                 'fr', $artwork->SousCategorieObjet
             )->first();
 
-            $dimensions = array_filter($artwork->DimensionsGenerales);
+            $dimensions = $artwork->DimensionsGenerales;
 
             $borough = Artwork\Borough::where(
                 'name', $artwork->Arrondissement
@@ -79,90 +187,56 @@ class ImportArtwork implements ShouldQueue
             $location = new Point($artwork->CoordonneeLatitude,
                 $artwork->CoordonneeLongitude);
 
-            $model = Artwork::updateOrCreate(
-                ['title' => $title, 'borough_id' => $borough->id],
-                ['location' => $location, 'dimensions' => $dimensions,
-                 'produced_at' => $produced_at, 'category_id' => $category->id,
-                 'subcategory_id' => $subcategory->id, 'collection_id' => $collection->id]
-            );
+            $details = $artwork->Batiment ?? $artwork->Parc ?? '';
 
-            /* Artists */
-            foreach ($artwork->Artistes as $artist) {
-                if ($collective = isset($artist->NomCollectif)) {
-                    $name = $artist->NomCollectif;
-                } else {
-                    $name = $artist->Prenom . ' ' . $artist->Nom;
-                }
+            $model = Artwork::equals('location', $location)->where('title', $title);
+            if ($model->count() > 1) {
+                error_log('Duplicate found: ' . $title);
+                continue;
+            }
 
-                $model->artists()->syncWithoutDetaching(Artist::updateOrCreate( // XXX
-                    ['name' => $name], ['collective' => $collective]
-                )->id);
+            if ($model = $model->first()) {
+                $model->update(
+                    ['title' => $title, 'produced_at' => $produced_at,
+                     'category_id' => $category->id, 'subcategory_id' => $subcategory->id,
+                     'dimensions' => $dimensions, 'borough_id' => $borough->id,
+                     'location' => $location, 'details' => $details,
+                     'collection_id' => $collection->id]
+                );
+            } else {
+                $model = Artwork::create(
+                    ['title' => $title, 'produced_at' => $produced_at,
+                     'category_id' => $category->id, 'subcategory_id' => $subcategory->id,
+                     'dimensions' => $dimensions, 'borough_id' => $borough->id,
+                     'location' => $location, 'details' => $details,
+                     'collection_id' => $collection->id]
+                );
             }
 
             /* Materials */
-            foreach ($this->array_zip($artwork->Materiaux,
-                $artwork->MateriauxAng) as $material) {
-                /* XXX */
-                $material[0] = $this->mb_ucfirst(trim($material[0]));
-                $material[1] = $this->mb_ucfirst(trim($material[1]));
-
-                /* XXX */
-                if ($material[0] == 'Béton ductal') {
-                    $material[1] = 'Ductal concrete';
-                } else if ($material[0] == 'Aluminium') {
-                    $material[1] = 'Aluminum';
-                } else if ($material[0] == 'DEL') {
-                    $material[1] = 'LED';
-                } else if ($material[0] == 'Corten') {
-                    $material[1] = 'Corten';
-                } else if ($material[0] == 'Composantes technologiques') {
-                    $material[1] = 'Technological components';
-                } else if ($material[0] == 'Granit') {
-                    $material[1] = 'Granit';
-                }
-
-                /* XXX */
-                if ($material[0] != '') {
-                    $model->materials()->syncWithoutDetaching(Artwork\Material::firstOrCreate( // XXX
+            foreach ($this->array_zip($artwork->Materiaux, $artwork->MateriauxAng) as $material) { // XXX
+                if ($material[0]) { // XXX
+                    $model->materials()->syncWithoutDetaching(Artwork\Material::firstOrCreate(
                         ['fr' => $material[0]], ['en' => $material[1]]
                     )->id);
                 }
             }
 
             /* Techniques */
-            foreach ($this->array_zip($artwork->Technique,
-                $artwork->TechniqueAng) as $technique) {
-                /* XXX */
-                $technique[0] = $this->mb_ucfirst(trim($technique[0]));
-                $technique[1] = $this->mb_ucfirst(trim($technique[1]));
-
-                /* XXX */
-                if ($technique[0] == 'Aluchromie') {
-                    $technique[1] = 'Aluchromy';
-                } else if ($technique[0] == 'Contre-collé sur bois') {
-                    $technique[1] = 'Laminated on wood';
-                } else if ($technique[0] == 'Béton coulé (stèles)') {
-                    $technique[1] = 'Poured concrete (stelae)';
-                } else if ($technique[0] == 'Aluminium taillé') {
-                    $technique[1] = 'Cut aluminum';
-                } else if ($technique[0] == 'Soudées ensemble') {
-                    $technique[1] = 'Welded together';
-                } else if ($technique[0] == 'Granit poli') {
-                    $technique[1] = 'Polished granite';
-                } else if ($technique[0] == 'Assemblé Granit: gravé au jet de sable (fabrication artisanale)') {
-                    $technique[1] = 'Assembled Granite: sandblasted (handcrafted)';
-                } else if ($technique[0] == 'Vidéoprojections (oeuvre numérique)') {
-                    $technique[1] = 'Videoprojections (digital work)';
-                } else if ($technique[0] == 'Pavés découpés') {
-                    $technique[1] = 'Cut pavers';
-                }
-
-                /* XXX */
-                if ($technique[0] != '') {
-                    $model->techniques()->syncWithoutDetaching(Artwork\Technique::firstOrCreate( // XXX
+            foreach ($this->array_zip($artwork->Technique, $artwork->TechniqueAng) as $technique) { // XXX
+                if ($technique[0]) { // XXX
+                    $model->techniques()->syncWithoutDetaching(Artwork\Technique::firstOrCreate(
                         ['fr' => $technique[0]], ['en' => $technique[1]]
                     )->id);
                 }
+            }
+
+            /* Artists */
+            foreach ($artwork->Artistes as $artist) {
+                $model->artists()->syncWithoutDetaching(Artist::updateOrCreate(
+                    ['name' => $artist->name],
+                    ['collective' => $artist->collective, 'alias' => $artist->alias]
+                )->id);
             }
 
             $this->progressBar->advance();
@@ -178,39 +252,87 @@ class ImportArtwork implements ShouldQueue
      */
     public function normalize($artwork)
     {
-        /* Sous-catégorie */
-        if ($artwork->SousCategorieObjet == 'Bois/menuiserie d\'art') {
-            $artwork->SousCategorieObjet = 'Bois/Menuiserie';
-        } else if ($artwork->SousCategorieObjet == 'Design industriel') {
-            $artwork->SousCategorieObjet = 'Design Industriel';
-        } else if ($artwork->SousCategorieObjet == 'Mosaique') {
-            $artwork->SousCategorieObjet = 'Mosaïque';
-        } else if ($artwork->SousCategorieObjet == 'Techniques mixtes') {
-            $artwork->SousCategorieObjet = 'Technique Mixte';
-        }
+        /* XXX */
+        $clean = function($arr) {
+            return function($str) use ($arr) {
+                $item = $this->mb_ucfirst(trim($str));
+                return $arr[$item] ?? $item;
+            };
+        };
+
+        /* XXX */
+        $repeated = function($arr) {
+            if (count($arr) < 4) {
+                return false;
+            }
+
+            $unit = $arr[1];
+            for ($i = 1; $i < count($arr); $i += 2) {
+                if ($arr[$i] != $unit) {
+                    return false;
+                }
+            }
+            return $unit == 'cm' || $unit == 'm';
+        };
+
+        $artwork->SousCategorieObjet = $this->subcategories[$artwork->SousCategorieObjet] ?? $artwork->SousCategorieObjet;
 
         /* XXX */
         $split = '/x++(?!cm|m)|(?<=\d|x)(?=cm|m)|(?<=cm|m)(?=\d)/i';
         $replace = '/\(.*?\)|\s+|\'|:|(?<!\d)\.|(?!c?m)[a-œ]+(?<!x|\\r)/i';
-        $artwork->DimensionsGenerales = preg_split($split,
+        $dimensions = array_filter(preg_split($split,
             preg_replace('/,/', '.', preg_replace($replace, '',
-            $artwork->DimensionsGenerales)));
+            $artwork->DimensionsGenerales))));
+        if ($dimensions &&
+            $dimensions[array_key_last($dimensions)] != 'cm' &&
+            $dimensions[array_key_last($dimensions)] != 'm') {
+            array_push($dimensions, 'cm');
+        }
+        if ($repeated($dimensions)) {
+            for ($i = 1; $i < count($dimensions); $i += 2) {
+                unset($dimensions[$i]);
+            }
+            $dimensions = array_merge($dimensions);
+        }
+        $artwork->DimensionsGenerales = $dimensions;
 
         /* XXX */
         $split = '/;|,| (et|ou|and|or) (?!.*\))/';
         $replace = '/\.|\?|\(.*?\)/';
-        $artwork->Materiaux = preg_split($split, preg_replace($replace, '',
-            $artwork->Materiaux));
-        $artwork->MateriauxAng = preg_split($split, preg_replace($replace, '',
-            $artwork->MateriauxAng));
+        $artwork->Materiaux = array_map($clean($this->materials),
+            preg_split($split, preg_replace($replace, '', $artwork->Materiaux)));
+        $artwork->MateriauxAng = array_map($clean($this->materials),
+            preg_split($split, preg_replace($replace, '', $artwork->MateriauxAng)));
 
         /* XXX */
         $split = '/;|,| (et|ou|and|or) (?!.*\))/';
-        $replace = '/\.|\(\?\)/';
-        $artwork->Technique = preg_split($split, preg_replace($replace, '',
-            $artwork->Technique));
-        $artwork->TechniqueAng = preg_split($split, preg_replace($replace, '',
-            $artwork->TechniqueAng));
+        $replace = '/\.|\(.*?\)/';
+        $artwork->Technique = array_map($clean($this->techniques),
+            preg_split($split, preg_replace($replace, '', $artwork->Technique)));
+        $artwork->TechniqueAng = array_map($clean($this->techniques),
+            preg_split($split, preg_replace($replace, '', $artwork->TechniqueAng)));
+
+        /* Artists */
+        $artists = [];
+        foreach ($artwork->Artistes as $artist) {
+            if ($collective = isset($artist->NomCollectif)) {
+                $name = $artist->NomCollectif;
+            } else {
+                $name = $artist->Prenom . (strlen($artist->Prenom) == 1 ? '. ' : ' ') . $artist->Nom;
+            }
+
+            $alias = $this->artists[$name][1] ?? null;
+            $name = trim($this->artists[$name][0] ?? $name);
+
+            if ($name != 'Auteur Inconnu') {
+                array_push($artists, (object) [
+                    'name'       => $name,
+                    'collective' => $collective,
+                    'alias'      => $alias,
+                ]);
+            }
+        }
+        $artwork->Artistes = $artists;
     }
 
     /**
