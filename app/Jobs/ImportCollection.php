@@ -18,8 +18,6 @@ class ImportCollection implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private $progressBar;
-
     /**
      * Create a new job instance.
      *
@@ -28,6 +26,57 @@ class ImportCollection implements ShouldQueue
     public function __construct()
     {
         $this->progressBar = new ProgressBar(new ConsoleOutput());
+
+        $this->artists = [
+            'Jacques G de Tonnancour' => 'Jacques Godefroy de Tonnancour',
+        ];
+
+        $this->techniques = [
+            'Mosaïque'         => '',
+            'Découpé au laser' => 'Découpe au laser',
+        ];
+
+        $this->materials = [
+            'Synthétiques'           => 'Fibres synthétiques',
+            'émail'                  => 'Émail',
+            'Poudre d’oxyde colorée' => 'Poudre d\'oxyde colorée',
+        ];
+
+        /* $this->boroughs = [ */
+        /*     'Côtes-des-Neiges-NDG'          => 'Côte-des-Neiges–Notre-Dame-de-Grâce', */
+        /*     'Mercier-Hochelaga-Maisonneuve' => 'Mercier–Hochelaga-Maisonneuve', */
+        /*     'Rosemont-La-Petite-Patrie'     => 'Rosemont–La Petite-Patrie', */
+        /* ]; */
+
+        $this->artists = [
+            'Arpi'                                    => ['René-Pierre Beaudry', 'Arpi'],
+            'Labrona'                                 => ['', 'Labrona'],
+            'Huma Design'                             => ['Humà Design'],
+            'SETH Julien Malland'                     => ['Julien Malland', 'Seth'],
+            'Other Troy Lovegates'                    => ['Troy Lovegates', 'Other'],
+            'Julio Cesar Moreno Nicaragua'            => ['Julio Cesar Moreno'],
+            'Roadsworth'                              => ['Peter Gibson', 'Roadsworth'],
+            'Roadsworth Peter Gibson'                 => ['Peter Gibson', 'Roadsworth'],
+            'Monk.e'                                  => ['', 'Monk.E'],
+            'Cyril V'                                 => ['Cyril V.', ''],
+            'FIVE EIGHT'                              => ['', 'Five8'],
+            'XRay'                                    => ['', 'XRay'],
+            'Surface 3'                               => [''],
+            'Five8'                                   => ['', 'Five8'],
+            'OMEN'                                    => ['', 'Omen'],
+            'Nélio'                                   => ['', 'Nélio'],
+            'HSIX'                                    => ['Carlos Oliva', 'Hsix'],
+            'El Mac'                                  => ['Miles Gregor', 'El Mac'],
+            'Millo'                                   => ['Francesco Camillo Giorgino', 'Millo'],
+            'Gawd'                                    => ['Christopher Ross', 'Gawd'],
+            'Alexa Hatanaka'                          => [''],
+            'Embassy of Imagination Patrick Thompson' => ['Embassy of Imagination'],
+            'MATÉO Mathieu Bories'                    => ['Mathieu Bories', 'Mateo'],
+            'Peru Dyer'                               => ['Peru Dyer Jalea', 'Peru 143'],
+            'Dan Buller'                              => ['William Daniel Buller'],
+            'Astro'                                   => ['', 'Astro'],
+            'CASE'                                    => ['Andreas von Chrzanowski', 'Case Maclaim'],
+        ];
     }
 
     /**
@@ -67,70 +116,53 @@ class ImportCollection implements ShouldQueue
 
             $details = $artwork[13];
 
-            $model = Artwork::updateOrCreate(
-                ['title' => $title, 'borough_id' => $borough->id],
-                ['location' => $location, 'dimensions' => $dimensions,
-                 'category_id' => $category->id, 'subcategory_id' => $subcategory->id,
-                 'produced_at' => $produced_at, 'collection_id' => $collection->id,
-                 'details' => $details]
-            );
+            $model = Artwork::equals('location', $location)->where('title', $title);
+            if ($model->count() > 1) {
+                error_log('Duplicate found: ' . $title);
+                continue;
+            }
 
+            if ($model = $model->first()) {
+                $model->update(
+                    ['title' => $title, 'produced_at' => $produced_at,
+                     'category_id' => $category->id, 'subcategory_id' => $subcategory->id,
+                     'dimensions' => $dimensions, 'borough_id' => $borough->id,
+                     'location' => $location, 'details' => $details,
+                     'collection_id' => $collection->id]
+                );
+            } else {
+                $model = Artwork::create(
+                    ['title' => $title, 'produced_at' => $produced_at,
+                     'category_id' => $category->id, 'subcategory_id' => $subcategory->id,
+                     'dimensions' => $dimensions, 'borough_id' => $borough->id,
+                     'location' => $location, 'details' => $details,
+                     'collection_id' => $collection->id]
+                );
+            }
+
+            $artist = trim($artwork[14]) . " " . trim($artwork[15]);
             $model->artists()->syncWithoutDetaching(Artist::firstOrCreate( // XXX
-                ['name' => trim($artwork[14]) . " " . trim($artwork[15])]
+                ['name' => $this->artists[$artist] ?? $artist]
             )->id);
 
-            $techniques = explode('; ', $artwork[8]);
+            $techniques = array_map('ucfirst', explode('; ', $artwork[8]));
             foreach ($techniques as $technique) {
-                if ($technique == "mosaïque") {
-                    continue;
-                }
-
-                if ($technique = ucfirst($technique)) {
+                $technique = $this->techniques[$technique] ?? $technique;
+                if ($technique) {
                     $model->techniques()->syncWithoutDetaching(Artwork\Technique::firstOrCreate( // XXX
                         ['fr' => $technique],
                     )->id);
                 }
             }
 
-            $materials = preg_split('/; | et /', preg_replace('/[A-zÀ-ú]+: |\?/', '', $artwork[7]));
+            $materials = array_map('ucfirst', preg_split('/; | et /',
+                preg_replace('/[A-zÀ-ú]+: |\?/', '', $artwork[7])));
             foreach ($materials as $material) {
-                if ($material == "synthétiques") {
-                    $material = "Fibres synthétiques";
-                } else if ($material == "émail") {
-                    $material = "Émail";
-                }
-
-                if ($material = ucfirst($material)) {
-                    $material_en = null;
-                    if ($material == "Patine") {
-                        $material_en = "Patina";
-                    } else if ($material == "Aggloméré") {
-                        $material_en = "Agglomerate";
-                    } else if ($material == "Formica") {
-                        $material_en = "Formica";
-                    } else if ($material == "Fibres naturelles") {
-                        $material_en = "Natural fibers";
-                    } else if ($material == "Fibres synthétiques") {
-                        $material_en = "Synthetic fibers";
-                    } else if ($material == "Polyuréthane") {
-                        $material_en = "Polyurethane";
-                    } else if ($material == "Peinture électrostatique") {
-                        $material_en = "Electrostatic painting";
-                    } else if ($material == "Poudre d’oxyde colorée") {
-                        $material_en = "Colored oxide powder";
-                    } else if ($material == "Contreplaqué") {
-                        $material_en = "Plywood";
-                    }
-
-                    if ($material_en) {
-                        $model->materials()->syncWithoutDetaching(Artwork\Material::updateOrCreate( // XXX
-                            ['fr' => $material], ['en' => $material_en]
-                        )->id);
-                    } else {
-                        $model->materials()->syncWithoutDetaching(Artwork\Material::firstOrCreate( // XXX
-                            ['fr' => $material],
-                        )->id);
-                    }
+                $material = $this->materials[$material] ?? $material;
+                if ($material) {
+                    $model->materials()->syncWithoutDetaching(Artwork\Material::firstOrCreate( // XXX
+                        ['fr' => $material],
+                    )->id);
                 }
             }
 
@@ -157,29 +189,19 @@ class ImportCollection implements ShouldQueue
 
         $this->progressBar->start();
         foreach ($csv as $artwork) {
-            if ($artwork[3] == "Ottawa" ||
-                $artwork[3] == "Québec" ||
-                $artwork[3] == "Mont-Tremblant") {
+            if ($artwork[3] != "Montréal") {
                 continue;
             }
 
-            $title = trim(str_replace('"', '', $artwork[0]));
+            $title = trim(preg_replace('/^"|"$/', '', $artwork[0]));
 
             $produced_at = date_create_from_format('Y-m-d', "$artwork[1]-01-01"); // XXX
 
-            /* XXX */
-            if ($artwork[4] == "Côtes-des-Neiges-NDG") {
-                $artwork[4] = "Côte-des-Neiges–Notre-Dame-de-Grâce";
-            } else if ($artwork[4] == "Mercier-Hochelaga-Maisonneuve") {
-                $artwork[4] = "Mercier–Hochelaga-Maisonneuve";
-            } else if ($artwork[4] = "Rosemont-La-Petite-Patrie") {
-                $artwork[4] = "Rosemont–La Petite-Patrie";
-            }
-            $borough = Artwork\Borough::where(
-                'name', $artwork[4]
-            )->first();
+            /* $borough = Artwork\Borough::where( */
+            /*     'name', $this->boroughs[$artwork[4]] ?? $artwork[4] */
+            /* )->first(); */
 
-            $details = preg_replace('/^"|"$/', '', $artwork[6]);
+            $details = trim($artwork[6]); // XXX
 
             /* XXX */
             preg_match("/(\d+)\s*°\s*(\d+)\s*'\s*(\d+\.\d+)\s*(\"|'')/", $artwork[11], $lat);
@@ -189,29 +211,46 @@ class ImportCollection implements ShouldQueue
                 -$this->DMStoDEC($lon[1], $lon[2], $lon[3])
             );
 
-            $model = Artwork::updateOrCreate(
-                ['title' => $title, 'borough_id' => $borough->id ?? null],
-                ['location' => $location, 'produced_at' => $produced_at,
-                 'details' => $details, 'collection_id' => $collection->id,
-                 'category_id' => $category->id] // XXX
-            );
+            $borough = Artwork\Borough::contains('area', $location)->first();
+
+            $model = Artwork::equals('location', $location)->where('title', $title);
+            if ($model->count() > 1) {
+                error_log('Duplicate found: ' . $title);
+                continue;
+            }
+
+            if ($model = $model->first()) {
+                $model->update(
+                    ['title' => $title, 'produced_at' => $produced_at,
+                     'category_id' => $category->id, 'borough_id' => $borough->id,
+                     'location' => $location, 'details' => $details,
+                     'collection_id' => $collection->id]
+                );
+            } else {
+                $model = Artwork::create(
+                    ['title' => $title, 'produced_at' => $produced_at,
+                     'category_id' => $category->id, 'borough_id' => $borough->id,
+                     'location' => $location, 'details' => $details,
+                     'collection_id' => $collection->id]
+                );
+            }
 
             /* XXX */
             $artists = preg_split('/,|&|\+| et/', preg_replace('/avec .* de|en .* avec/', ',', $artwork[2]));
             foreach ($artists as $artist) {
-                if ($artist == "Other (Troy Lovegates)") {
-                    $artist = "Troy Lovegates";
-                }
-                $artist = ucfirst(trim(preg_replace('/^"|[A-zÀ-ú ]+:|équipe de |\(.*\)|\(|\)/', '', $artist)));
-                if ($artist == "Alexa Hatanaka") {
-                    continue;
-                } else if ($artist == "Embassy of Imagination Patrick Thompson") {
-                    $artist = "Embassy of Imagination";
-                }
+                $artist = ucfirst(trim(preg_replace('/^"|[A-zÀ-ú ]+:|équipe de |\(|\)/', '', $artist)));
 
-                $model->artists()->syncWithoutDetaching(Artist::firstOrCreate( // XXX
-                    ['name' => $artist],
-                )->id);
+                $name = trim($this->artists[$artist][0] ?? $artist);
+                $alias = $this->artists[$artist][1] ?? null;
+                if ($alias) {
+                    $model->artists()->syncWithoutDetaching(Artist::firstOrCreate( // XXX
+                        ['alias' => $alias], ['name' => $name]
+                    )->id);
+                } else if ($name) {
+                    $model->artists()->syncWithoutDetaching(Artist::firstOrCreate( // XXX
+                        ['name' => $name], ['alias' => $alias]
+                    )->id);
+                }
             }
 
             $this->progressBar->advance();
@@ -231,7 +270,7 @@ class ImportCollection implements ShouldQueue
         $artworks = $json->operationalLayers[1]->featureCollection->layers[0]->featureSet->features;
         $this->progressBar->setMaxSteps(count($artworks));
 
-        $category = Artwork\Category::where('fr', 'Murales')->first();
+        $category = Artwork\Category::where('fr', 'Murales')->first(); // XXX
         $collection = Artwork\Collection::where(
             'name', 'Dose Culture'
         )->first();
@@ -249,16 +288,27 @@ class ImportCollection implements ShouldQueue
             $location = new Point($artwork->lat, $artwork->long);
 
             /* XXX */
-            $details = preg_replace('/  /', ' - ', trim(preg_replace('/<.*?>/', ' ', $artwork->name)));
-            if ($details == "Parc Marquis-de-Montcalm (chalet) - 1555 rue Lavallée &nbsp; -  -  L'artiste sera présent : ....") {
-                $details = "Parc Marquis-de-Montcalm (chalet) - 1555 rue Lavallée";
+            $details = trim(preg_replace('/  /', ' - ', trim(preg_replace('/<.*?>|&nbsp;.*/', ' ', $artwork->name))));
+
+            $model = Artwork::equals('location', $location)->where('title', $title);
+            if ($model->count() > 1) {
+                error_log('Duplicate found: ' . $title);
+                continue;
             }
 
-            $model = Artwork::updateOrCreate(
-                ['title' => $title, 'borough_id' => null],
-                ['location' => $location, 'category_id' => $category->id,
-                 'details' => $details, 'collection_id' => $collection->id] // XXX
-            );
+            if ($model = $model->first()) {
+                $model->update(
+                    ['title' => $title, 'category_id' => $category->id,
+                     'location' => $location, 'details' => $details,
+                     'collection_id' => $collection->id]
+                );
+            } else {
+                $model = Artwork::create(
+                    ['title' => $title, 'category_id' => $category->id,
+                     'location' => $location, 'details' => $details,
+                     'collection_id' => $collection->id]
+                );
+            }
 
             preg_match('/(?<=:).*(?=<)/', $artwork->description, $matches);
             $artists = preg_split('/ et |, /', trim(preg_replace('/<.*>/', '', $matches[0])));
@@ -283,9 +333,8 @@ class ImportCollection implements ShouldQueue
     {
         $this->handleUdeM();
         $this->handleMU();
-        $this->handleDC();
+        /* $this->handleDC(); */
     }
-
 
     /**
      * TODO
