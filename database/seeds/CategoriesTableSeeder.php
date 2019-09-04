@@ -15,6 +15,7 @@ class CategoriesTableSeeder extends Seeder
             'Beaux-Arts'      => 'Fine Arts',
             'Arts Décoratifs' => 'Decorative Arts',
             'Murales'         => 'Murals',
+            'Anamorphoses'    => 'Anamorphosis',
         ];
 
         foreach ($categories as $fr => $en) {
