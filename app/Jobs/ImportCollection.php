@@ -27,10 +27,6 @@ class ImportCollection implements ShouldQueue
     {
         $this->progressBar = new ProgressBar(new ConsoleOutput());
 
-        $this->artists = [
-            'Jacques G de Tonnancour' => 'Jacques Godefroy de Tonnancour',
-        ];
-
         $this->techniques = [
             'Mosaïque'         => '',
             'Découpé au laser' => 'Découpe au laser',
@@ -49,6 +45,7 @@ class ImportCollection implements ShouldQueue
         /* ]; */
 
         $this->artists = [
+            'Jacques G de Tonnancour'                 => ['Jacques Godefroy de Tonnancour'],
             'Arpi'                                    => ['René-Pierre Beaudry', 'Arpi'],
             'Labrona'                                 => ['', 'Labrona'],
             'Huma Design'                             => ['Humà Design'],
@@ -76,6 +73,20 @@ class ImportCollection implements ShouldQueue
             'Dan Buller'                              => ['William Daniel Buller'],
             'Astro'                                   => ['', 'Astro'],
             'CASE'                                    => ['Andreas von Chrzanowski', 'Case Maclaim'],
+            'Axe'                                     => ['', 'Axe Lalime'],
+            'AXE'                                     => ['', 'Axe Lalime'],
+            'B.Rue.B'                                 => ['', 'B.Rue.B'],
+            'Korb'                                    => ['', 'Korb'],
+            'Rowarts'                                 => ['', 'Rowarts'],
+            'Acek'                                    => ['', 'Acek'],
+            'Tilted'                                  => ['', 'Tilted'],
+            'Awe'                                     => ['', 'Awe'],
+            'CAM'                                     => ['', 'Cam'],
+            'Boporc'                                  => ['', 'Boporc'],
+            'Miss Wuna'                               => ['', 'Miss Wuna'],
+            'Hell-P'                                  => ['', 'Hell-P'],
+            'Nasty'                                   => ['', 'Nasty'],
+            'Crane'                                   => ['', 'Crane'],
         ];
     }
 
@@ -142,7 +153,7 @@ class ImportCollection implements ShouldQueue
 
             $artist = trim($artwork[14]) . " " . trim($artwork[15]);
             $model->artists()->syncWithoutDetaching(Artist::firstOrCreate( // XXX
-                ['name' => $this->artists[$artist] ?? $artist]
+                ['name' => $this->artists[$artist][0] ?? $artist]
             )->id);
 
             $techniques = array_map('ucfirst', explode('; ', $artwork[8]));
@@ -242,6 +253,7 @@ class ImportCollection implements ShouldQueue
 
                 $name = trim($this->artists[$artist][0] ?? $artist);
                 $alias = $this->artists[$artist][1] ?? null;
+
                 if ($alias) {
                     $model->artists()->syncWithoutDetaching(Artist::firstOrCreate( // XXX
                         ['alias' => $alias], ['name' => $name]
@@ -265,30 +277,36 @@ class ImportCollection implements ShouldQueue
      */
     public function handleDC()
     {
-        $json = json_decode(file_get_contents(
-            "https://arcgis.com/sharing/content/items/d03d076d190844ad8a9e17df8727b1eb/data"));
-        $artworks = $json->operationalLayers[1]->featureCollection->layers[0]->featureSet->features;
-        $this->progressBar->setMaxSteps(count($artworks));
+        $csv = array_map('str_getcsv', array_slice(explode(PHP_EOL,
+            Storage::get('private/DoseCulture.csv')), 1, -1));
+        $this->progressBar->setMaxSteps(count($csv));
 
-        $category = Artwork\Category::where('fr', 'Murales')->first(); // XXX
         $collection = Artwork\Collection::where(
             'name', 'Dose Culture'
         )->first();
 
         $this->progressBar->start();
-        foreach ($artworks as $artwork) {
-            $artwork = $artwork->attributes;
-            if (!isset($artwork->lat) || !isset($artwork->long)) {
-                continue;
+        foreach ($csv as $artwork) {
+            $title = trim($artwork[0]);
+
+            $produced_at = date_create_from_format('m/d/Y', $artwork[1]);
+
+            $category = Artwork\Category::where(
+                'fr', ucfirst(explode(',', $artwork[2])[0]) . 's'
+            )->first();
+
+            /* XXX Lazily copy-pasted */
+            $split = '/,|et|x++(?!cm|m)|(?<=\d|x)(?=cm|m)|(?<=cm|m)(?=\d)/i';
+            $replace = '/\(.*?\)|\s+|\'|:|(?<!\d)\./i';
+            $dimensions = array_filter(preg_split($split, preg_replace($replace, '', $artwork[4])));
+            if ($dimensions &&
+                $dimensions[array_key_last($dimensions)] != 'cm' &&
+                $dimensions[array_key_last($dimensions)] != 'm' &&
+                $dimensions[array_key_last($dimensions)] != 'm²' ) {
+                array_push($dimensions, 'cm');
             }
 
-            preg_match("/(?<='>).*(?=<\/f)/", $artwork->description, $matches);
-            $title = $matches[0];
-
-            $location = new Point($artwork->lat, $artwork->long);
-
-            /* XXX */
-            $details = trim(preg_replace('/  /', ' - ', trim(preg_replace('/<.*?>|&nbsp;.*/', ' ', $artwork->name))));
+            $location = new Point($artwork[10], $artwork[11]);
 
             $model = Artwork::equals('location', $location)->where('title', $title);
             if ($model->count() > 1) {
@@ -298,25 +316,37 @@ class ImportCollection implements ShouldQueue
 
             if ($model = $model->first()) {
                 $model->update(
-                    ['title' => $title, 'category_id' => $category->id,
-                     'location' => $location, 'details' => $details,
-                     'collection_id' => $collection->id]
+                    ['title' => $title, 'produced_at' => $produced_at,
+                     'category_id' => $category->id, 'dimensions' => $dimensions,
+                     'location' => $location, 'collection_id' => $collection->id]
                 );
             } else {
                 $model = Artwork::create(
-                    ['title' => $title, 'category_id' => $category->id,
-                     'location' => $location, 'details' => $details,
-                     'collection_id' => $collection->id]
+                    ['title' => $title, 'produced_at' => $produced_at,
+                     'category_id' => $category->id, 'dimensions' => $dimensions,
+                     'location' => $location, 'collection_id' => $collection->id]
                 );
             }
 
-            preg_match('/(?<=:).*(?=<)/', $artwork->description, $matches);
-            $artists = preg_split('/ et |, /', trim(preg_replace('/<.*>/', '', $matches[0])));
-
-            foreach ($artists as $artist) {
-                $model->artists()->syncWithoutDetaching(Artist::firstOrCreate( // XXX
-                    ['name' => $artist],
+            if ($artwork[5] == 'murale de style graffiti, graffiti style wall') {
+                $model->techniques()->syncWithoutDetaching(Artwork\Technique::firstOrCreate( // XXX
+                    ['fr' => 'Graffiti'], ['en' => 'Graffiti']
                 )->id);
+            }
+
+            foreach (array_map('trim', preg_split('/,| et /', $artwork[6])) as $artist) {
+                $name = trim($this->artists[$artist][0] ?? $artist);
+                $alias = $this->artists[$artist][1] ?? null;
+
+                if ($alias) {
+                    $model->artists()->syncWithoutDetaching(Artist::firstOrCreate( // XXX
+                        ['alias' => $alias], ['name' => $name]
+                    )->id);
+                } else if ($name) {
+                    $model->artists()->syncWithoutDetaching(Artist::firstOrCreate( // XXX
+                        ['name' => $name], ['alias' => $alias]
+                    )->id);
+                }
             }
 
             $this->progressBar->advance();
@@ -333,7 +363,7 @@ class ImportCollection implements ShouldQueue
     {
         $this->handleUdeM();
         $this->handleMU();
-        /* $this->handleDC(); */
+        $this->handleDC();
     }
 
     /**
