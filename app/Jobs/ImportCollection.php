@@ -64,7 +64,7 @@ class ImportCollection implements ShouldQueue
             'Nélio'                                   => ['', 'Nélio'],
             'HSIX'                                    => ['Carlos Oliva', 'Hsix'],
             'El Mac'                                  => ['Miles Gregor', 'El Mac'],
-            'Millo'                                   => ['Francesco Camillo Giorgino', 'Millo'],
+            'Milo'                                    => ['', 'Milo'], // XXX
             'Gawd'                                    => ['Christopher Ross', 'Gawd'],
             'Alexa Hatanaka'                          => [''],
             'Embassy of Imagination Patrick Thompson' => ['Embassy of Imagination'],
@@ -76,6 +76,7 @@ class ImportCollection implements ShouldQueue
             'Axe'                                     => ['', 'Axe Lalime'],
             'AXE'                                     => ['', 'Axe Lalime'],
             'B.Rue.B'                                 => ['', 'B.Rue.B'],
+            'B.rue.B'                                 => ['', 'B.Rue.B'],
             'Korb'                                    => ['', 'Korb'],
             'Rowarts'                                 => ['', 'Rowarts'],
             'Acek'                                    => ['', 'Acek'],
@@ -84,9 +85,10 @@ class ImportCollection implements ShouldQueue
             'CAM'                                     => ['', 'Cam'],
             'Boporc'                                  => ['', 'Boporc'],
             'Miss Wuna'                               => ['', 'Miss Wuna'],
-            'Hell-P'                                  => ['', 'Hell-P'],
+            'Hell-p'                                  => ['', 'Hell-P'],
             'Nasty'                                   => ['', 'Nasty'],
             'Crane'                                   => ['', 'Crane'],
+            'Stéphanie'                               => [''],
         ];
     }
 
@@ -120,6 +122,7 @@ class ImportCollection implements ShouldQueue
             )->first();
 
             $dimensions = array_filter(explode(" x ", $artwork[9]));
+            array_push($dimensions, 'cm');
 
             $location = new Point($artwork[11], $artwork[12]);
 
@@ -204,7 +207,7 @@ class ImportCollection implements ShouldQueue
                 continue;
             }
 
-            $title = trim(preg_replace('/^"|"$/', '', $artwork[0]));
+            $title = trim(preg_replace('/^"|"$|"(?= \()|\(.*?\)/', '', $artwork[0]));
 
             $produced_at = date_create_from_format('Y-m-d', "$artwork[1]-01-01"); // XXX
 
@@ -298,7 +301,7 @@ class ImportCollection implements ShouldQueue
             /* XXX Lazily copy-pasted */
             $split = '/,|et|x++(?!cm|m)|(?<=\d|x)(?=cm|m)|(?<=cm|m)(?=\d)/i';
             $replace = '/\(.*?\)|\s+|\'|:|(?<!\d)\./i';
-            $dimensions = array_filter(preg_split($split, preg_replace($replace, '', $artwork[4])));
+            $dimensions = array_values(array_filter(preg_split($split, preg_replace($replace, '', $artwork[4]))));
             if ($dimensions &&
                 $dimensions[array_key_last($dimensions)] != 'cm' &&
                 $dimensions[array_key_last($dimensions)] != 'm' &&

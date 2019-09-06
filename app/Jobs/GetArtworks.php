@@ -163,15 +163,32 @@ class GetArtworks implements ShouldQueue
                 $details = $crawler->filterXPath("//div[contains(@class, 'detail-localisation')]/strong");
                 $details = $details->count() ? trim($details->text()) : "";
 
+                $model = Artwork::equals('location', $location)->where('title', $title);
+                if ($model->count() > 1) {
+                    error_log('Duplicate found: ' . $title);
+                    continue;
+                }
+
                 try {
-                    $model = Artwork::updateOrCreate(
-                        ['title' => $title, 'borough_id' => $borough],
-                        ['location' => $location, 'dimensions' => $dimensions,
-                         'category_id' => $category, 'subcategory_id' => $subcategory,
-                         'produced_at' => $produced_at, 'details' => $details,
-                         'collection_id' => $collection]
-                    );
+                    if ($model = $model->first()) {
+                        $model->update(
+                            ['title' => $title, 'produced_at' => $produced_at,
+                             'category_id' => $category, 'subcategory_id' => $subcategory,
+                             'dimensions' => $dimensions, 'borough_id' => $borough,
+                             'location' => $location, 'details' => $details,
+                             'collection_id' => $collection]
+                        );
+                    } else {
+                        $model = Artwork::create(
+                            ['title' => $title, 'produced_at' => $produced_at,
+                             'category_id' => $category, 'subcategory_id' => $subcategory,
+                             'dimensions' => $dimensions, 'borough_id' => $borough,
+                             'location' => $location, 'details' => $details,
+                             'collection_id' => $collection]
+                        );
+                    }
                 } catch (JsonEncodingException $e) {
+                    continue;
                 }
 
                 $techniques = $crawler->filterXPath("//div[contains(@class, 'detail-techniques')]/strong");

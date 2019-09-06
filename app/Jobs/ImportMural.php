@@ -97,7 +97,7 @@ class ImportMural implements ShouldQueue
             'citoyenNes'                  => [''],
             'NAIMO'                       => ['Naïmo Dupéré', 'Naimo'],
             'Naimo'                       => ['Naïmo Dupéré', 'Naimo'],
-            'MILLO'                       => ['', 'Millo'],
+            'MILLO'                       => ['Francesco Camillo Giorgino', 'Millo'],
             'Benny Wliding'               => ['Benny Wilding'],
             'Stack'                       => ['', 'Stack'],
             'Mastrocola'                  => ['Philippe Mastrocola'],
