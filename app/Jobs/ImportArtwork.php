@@ -321,7 +321,7 @@ class ImportArtwork implements ShouldQueue
                 $name = $artist->Prenom . (strlen($artist->Prenom) == 1 ? '. ' : ' ') . $artist->Nom;
             }
 
-            $alias = $this->artists[$name][1] ?? null;
+            $alias = $this->artists[$name][1] ?? '';
             $name = trim($this->artists[$name][0] ?? $name);
 
             if ($name != 'Auteur Inconnu') {

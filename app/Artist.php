@@ -21,7 +21,7 @@ class Artist extends Model
      * @var array
      */
     protected $hidden = [
-        'created_at', 'updated_at', 'pivot',
+        'consent', 'edited', 'created_at', 'updated_at', 'pivot'
     ];
 
     /**

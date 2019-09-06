@@ -14,7 +14,7 @@ class AddColumnsToArtistsTable extends Migration
     public function up()
     {
         Schema::table('artists', function (Blueprint $table) {
-            $table->string('alias')->nullable();
+            $table->string('alias')->default('')->after('name');
             $table->boolean('consent')->default(false);
             $table->boolean('edited')->default(false);
         });

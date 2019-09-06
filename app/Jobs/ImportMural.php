@@ -182,7 +182,7 @@ class ImportMural implements ShouldQueue
             foreach ($artists as $artist) {
                 $artist = trim($artist);
                 $name = trim($this->artists[$artist][0] ?? $artist);
-                $alias = $this->artists[$artist][1] ?? null;
+                $alias = $this->artists[$artist][1] ?? '';
 
                 if ($alias) {
                     $model->artists()->syncWithoutDetaching(Artist::firstOrCreate( // XXX

@@ -252,7 +252,7 @@ class ImportCollection implements ShouldQueue
                 $artist = ucfirst(trim(preg_replace('/^"|[A-zÀ-ú ]+:|équipe de |\(|\)/', '', $artist)));
 
                 $name = trim($this->artists[$artist][0] ?? $artist);
-                $alias = $this->artists[$artist][1] ?? null;
+                $alias = $this->artists[$artist][1] ?? '';
 
                 if ($alias) {
                     $model->artists()->syncWithoutDetaching(Artist::firstOrCreate( // XXX
@@ -336,7 +336,7 @@ class ImportCollection implements ShouldQueue
 
             foreach (array_map('trim', preg_split('/,| et /', $artwork[6])) as $artist) {
                 $name = trim($this->artists[$artist][0] ?? $artist);
-                $alias = $this->artists[$artist][1] ?? null;
+                $alias = $this->artists[$artist][1] ?? '';
 
                 if ($alias) {
                     $model->artists()->syncWithoutDetaching(Artist::firstOrCreate( // XXX
