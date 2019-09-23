@@ -19,7 +19,7 @@ class CreateArtworksTable extends Migration
             $table->date('produced_at')->nullable();
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('subcategory_id')->nullable();
-            $table->json('dimensions');
+            $table->text('dimensions');
             $table->unsignedBigInteger('borough_id');
             $table->point('location');
             $table->timestamps();

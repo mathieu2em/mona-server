@@ -164,7 +164,7 @@ class ImportCollection implements ShouldQueue
                 $technique = $this->techniques[$technique] ?? $technique;
                 if ($technique) {
                     $model->techniques()->syncWithoutDetaching(Artwork\Technique::firstOrCreate( // XXX
-                        ['fr' => $technique],
+                        ['fr' => $technique]
                     )->id);
                 }
             }
@@ -175,7 +175,7 @@ class ImportCollection implements ShouldQueue
                 $material = $this->materials[$material] ?? $material;
                 if ($material) {
                     $model->materials()->syncWithoutDetaching(Artwork\Material::firstOrCreate( // XXX
-                        ['fr' => $material],
+                        ['fr' => $material]
                     )->id);
                 }
             }
@@ -238,14 +238,14 @@ class ImportCollection implements ShouldQueue
                     ['title' => $title, 'produced_at' => $produced_at,
                      'category_id' => $category->id, 'borough_id' => $borough->id,
                      'location' => $location, 'details' => $details,
-                     'collection_id' => $collection->id]
+                     'collection_id' => $collection->id, 'dimensions' => []]
                 );
             } else {
                 $model = Artwork::create(
                     ['title' => $title, 'produced_at' => $produced_at,
                      'category_id' => $category->id, 'borough_id' => $borough->id,
                      'location' => $location, 'details' => $details,
-                     'collection_id' => $collection->id]
+                     'collection_id' => $collection->id, 'dimensions' => []]
                 );
             }
 

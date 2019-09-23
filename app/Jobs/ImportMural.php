@@ -163,13 +163,15 @@ class ImportMural implements ShouldQueue
                 $model->update(
                     ['produced_at' => $produced_at, 'category_id' => $category->id,
                      'borough_id' => $borough->id, 'location' => $location,
-                     'details' => $details, 'collection_id' => $collection->id]
+                     'details' => $details, 'collection_id' => $collection->id,
+                     'dimensions' => []]
                 );
             } else {
                 $model = Artwork::create(
                     ['produced_at' => $produced_at, 'category_id' => $category->id,
                      'borough_id' => $borough->id, 'location' => $location,
-                     'details' => $details, 'collection_id' => $collection->id]
+                     'details' => $details, 'collection_id' => $collection->id,
+                     'dimensions' => []]
                 );
             }
 

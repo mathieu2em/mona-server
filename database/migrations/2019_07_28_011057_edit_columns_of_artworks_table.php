@@ -16,7 +16,7 @@ class EditColumnsOfArtworksTable extends Migration
         Schema::table('artworks', function (Blueprint $table) {
             $table->unsignedBigInteger('category_id')->nullable()->change();
             $table->unsignedBigInteger('borough_id')->nullable()->change();
-            $table->json('dimensions')->default("[]")->change();
+            // $table->json('dimensions')->default("[]")->change();
         });
     }
 
@@ -28,7 +28,7 @@ class EditColumnsOfArtworksTable extends Migration
     public function down()
     {
         Schema::table('artworks', function (Blueprint $table) {
-            $table->json('dimensions')->change();
+            // $table->json('dimensions')->change();
             $table->unsignedBigInteger('borough_id')->change();
             $table->unsignedBigInteger('category_id')->change();
         });

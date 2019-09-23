@@ -213,7 +213,7 @@ class GetArtworks implements ShouldQueue
                                 $artist == "In Situ";
                             }
                             $model->artists()->syncWithoutDetaching(Artist::firstOrCreate( // XXX
-                                ['name' => $artist],
+                                ['name' => $artist]
                             )->id);
                         }
                     }

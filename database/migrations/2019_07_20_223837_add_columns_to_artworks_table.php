@@ -15,7 +15,7 @@ class AddColumnsToArtworksTable extends Migration
     {
         Schema::table('artworks', function (Blueprint $table) {
             $table->unsignedBigInteger('collection_id')->nullable();
-            $table->text('details')->default("");
+            $table->string('details')->default("");
             $table->boolean('edited')->default(false);
 
             $table->foreign('collection_id')
