@@ -44,11 +44,11 @@
       :sort-desc.sync="sortDesc"
       :sort-direction="sortDirection"
       @filtered="onFiltered">
-      <template slot="collection" slot-scope="row">
+      <template v-slot:cell(collection)="row">
         {{ row.value.length }}
       </template>
 
-      <template slot="details" slot-scope="row">
+      <template v-slot:cell(details)="row">
         <b-button size="sm" @click="row.toggleDetails">
           {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
         </b-button>

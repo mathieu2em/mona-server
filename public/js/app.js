@@ -69616,19 +69616,19 @@ var render = function() {
         },
         scopedSlots: _vm._u([
           {
-            key: "category",
+            key: "cell(category)",
             fn: function(row) {
               return [_vm._v("\n      " + _vm._s(row.value.fr) + "\n    ")]
             }
           },
           {
-            key: "subcategory",
+            key: "cell(subcategory)",
             fn: function(row) {
               return [_vm._v("\n      " + _vm._s(row.value.fr) + "\n    ")]
             }
           },
           {
-            key: "artists",
+            key: "cell(artists)",
             fn: function(row) {
               return [
                 _c(
@@ -69648,25 +69648,25 @@ var render = function() {
             }
           },
           {
-            key: "ratings",
+            key: "cell(ratings)",
             fn: function(row) {
               return [_vm._v("\n      " + _vm._s(row.value.len) + "\n    ")]
             }
           },
           {
-            key: "comments",
+            key: "cell(comments)",
             fn: function(row) {
               return [_vm._v("\n      " + _vm._s(row.value.length) + "\n    ")]
             }
           },
           {
-            key: "photos",
+            key: "cell(photos)",
             fn: function(row) {
               return [_vm._v("\n      " + _vm._s(row.value.length) + "\n    ")]
             }
           },
           {
-            key: "details",
+            key: "cell(details)",
             fn: function(row) {
               return [
                 _c(
@@ -70130,13 +70130,13 @@ var render = function() {
         },
         scopedSlots: _vm._u([
           {
-            key: "collection",
+            key: "cell(collection)",
             fn: function(row) {
               return [_vm._v("\n      " + _vm._s(row.value.length) + "\n    ")]
             }
           },
           {
-            key: "details",
+            key: "cell(details)",
             fn: function(row) {
               return [
                 _c(

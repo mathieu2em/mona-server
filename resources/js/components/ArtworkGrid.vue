@@ -44,33 +44,33 @@
       :sort-desc.sync="sortDesc"
       :sort-direction="sortDirection"
       @filtered="onFiltered">
-      <template slot="category" slot-scope="row">
+      <template v-slot:cell(category)="row">
         {{ row.value.fr }}
       </template>
 
-      <template slot="subcategory" slot-scope="row">
+      <template v-slot:cell(subcategory)="row">
         {{ row.value.fr }}
       </template>
 
-      <template slot="artists" slot-scope="row">
+      <template v-slot:cell(artists)="row">
         <ul>
           <li v-for="value in row.value">{{ value.name }} {{ value.collective ? '(Collectif)' : '' }}</li>
         </ul>
       </template>
 
-      <template slot="ratings" slot-scope="row">
+      <template v-slot:cell(ratings)="row">
         {{ row.value.len }}
       </template>
 
-      <template slot="comments" slot-scope="row">
+      <template v-slot:cell(comments)="row">
         {{ row.value.length }}
       </template>
 
-      <template slot="photos" slot-scope="row">
+      <template v-slot:cell(photos)="row">
         {{ row.value.length }}
       </template>
 
-      <template slot="details" slot-scope="row">
+      <template v-slot:cell(details)="row">
         <b-button size="sm" @click="row.toggleDetails">
           {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
         </b-button>
